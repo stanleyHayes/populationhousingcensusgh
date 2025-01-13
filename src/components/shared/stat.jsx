@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Stat = ({icon, title, value}) => {
     return (
-        <Card variant="outlined" sx={{borderRadius: 4}}>
+        <Card variant="outlined">
             <CardContent>
                 <Stack direction="column" spacing={2}>
                     {icon}

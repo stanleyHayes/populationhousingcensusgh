@@ -1,28 +1,30 @@
-import {Badge, Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
-import {LanguageOutlined, MenuOutlined, MoreHoriz, Notifications} from "@mui/icons-material";
+import {Menu, MenuItem, Stack, ToggleButton, ToggleButtonGroup, Toolbar, Typography} from "@mui/material";
+import {
+    DarkModeOutlined,
+    GridView,
+    LanguageOutlined,
+    LightModeOutlined,
+    MenuOutlined,
+    TableRows
+} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLanguage, selectUI, toggleDrawerOpen} from "../../../redux/features/ui/ui-slice.js";
+import {
+    selectLanguage,
+    selectUI,
+    toggleDrawerOpen,
+    toggleVariant,
+    toggleView
+} from "../../../redux/features/ui/ui-slice.js";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 
 const MobileHeader = () => {
 
     const dispatch = useDispatch();
-    const {title} = useSelector(selectUI);
+    const {title, view, variant} = useSelector(selectUI);
 
-    const [menuOpen, setMenuOpen] = useState(false);
     const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
     const [el, setEl] = useState(null);
-
-    const handleMenuOpen = (e) => {
-        setMenuOpen(true);
-        setEl(e.currentTarget);
-    }
-
-    const handleClose = () => {
-        setMenuOpen(false);
-        setEl(null);
-    }
 
     const handleLanguageMenuOpen = (e) => {
         setLanguageMenuOpen(true);
@@ -67,9 +69,9 @@ const MobileHeader = () => {
                             borderRadius: 1,
                             borderColor: "icon.primary",
                             borderStyle: "solid",
-                            borderWidth: 0.5,
+                            borderWidth: 1,
                             p: 0.5,
-                            fontSize: 28,
+                            fontSize: 32,
                             color: "primary.main",
                             backgroundColor: "light.primary"
                         }}
@@ -86,9 +88,13 @@ const MobileHeader = () => {
                     </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <Badge badgeContent={4} variant="standard">
-                        <Notifications/>
-                    </Badge>
+
+                    {
+                        variant === 'light' ?
+                            <DarkModeOutlined sx={{cursor: "pointer"}} onClick={() => dispatch(toggleVariant())}/> :
+                            <LightModeOutlined sx={{cursor: "pointer"}} onClick={() => dispatch(toggleVariant())}/>
+                    }
+
                     <LanguageOutlined sx={{cursor: "pointer"}} onClick={handleLanguageMenuOpen}/>
 
                     <Menu open={languageMenuOpen} onClose={handleLanguageMenuClose} anchorEl={el}>
@@ -96,11 +102,20 @@ const MobileHeader = () => {
                         <MenuItem onClick={() => handleLanguageChange('fr')}>French</MenuItem>
                     </Menu>
 
-                    <MoreHoriz onClick={handleMenuOpen}/>
-
-                    <Menu open={menuOpen} onClose={handleClose} anchorEl={el}>
-
-                    </Menu>
+                    <ToggleButtonGroup
+                        size="small"
+                        value={view}>
+                        <ToggleButton
+                            onClick={(event, newView) => dispatch(toggleView(newView))}
+                            value="grid">
+                            <GridView/>
+                        </ToggleButton>
+                        <ToggleButton
+                            onClick={(event, newView) => dispatch(toggleView(newView))}
+                            value="table">
+                            <TableRows/>
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </Stack>
             </Stack>
         </Toolbar>

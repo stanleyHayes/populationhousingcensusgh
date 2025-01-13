@@ -16,27 +16,17 @@ import {
     OutlinedInput,
     Select,
     TextField,
-    ToggleButton,
-    ToggleButtonGroup,
     Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {selectHousehold} from "../../redux/features/households/household-slice.js";
 import {useEffect, useState} from "react";
-import {selectUI, setSubtitle, setTitle, toggleView} from "../../redux/features/ui/ui-slice.js";
+import {selectUI, setSubtitle, setTitle} from "../../redux/features/ui/ui-slice.js";
 import Empty from "../../components/shared/empty.jsx";
 import empty from "./../../assets/images/empty.png";
 import {useNavigate} from "react-router";
 import Stat from "../../components/shared/stat.jsx";
-import {
-    BalanceOutlined,
-    Cottage,
-    ElectricBike,
-    GridView,
-    LocationCity,
-    SearchOutlined,
-    TableRows
-} from "@mui/icons-material";
+import {BalanceOutlined, Cottage, ElectricBike, LocationCity, SearchOutlined} from "@mui/icons-material";
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
 import {selectDistricts} from "../../redux/features/districts/districts-slice.js";
 import CardViewContainer from "../../components/shared/cardview-container.jsx";
@@ -48,6 +38,7 @@ const HouseholdsPage = () => {
     const {households, error, loading} = useSelector(selectHousehold);
     const {ghanaRegions} = useSelector(selectRegions);
     const {districts} = useSelector(selectDistricts);
+
     const {view} = useSelector(selectUI);
 
     // number of regions, number of districts, completed / total conducted households, total number of visits
@@ -252,21 +243,16 @@ const HouseholdsPage = () => {
                                     )}
                                 />
                             </Grid>
-                            <Grid size={{xs: 2}}>
-                                <ToggleButtonGroup
+                            <Grid size={{xs: 12, md: 3, lg: 3}}>
+                                <Button
+                                    onClick={() => navigate('/household/new')}
+                                    fullWidth={true}
+                                    disableElevation={true}
                                     size="large"
-                                    value={view}>
-                                    <ToggleButton
-                                        onClick={(event, newView) => dispatch(toggleView(newView))}
-                                        value="grid">
-                                        <GridView/>
-                                    </ToggleButton>
-                                    <ToggleButton
-                                        onClick={(event, newView) => dispatch(toggleView(newView))}
-                                        value="table">
-                                        <TableRows/>
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
+                                    variant="outlined"
+                                    sx={{textTransform: "none", py: 1.7}}>
+                                    Create New Household
+                                </Button>
                             </Grid>
                         </Grid>
                     </Box>

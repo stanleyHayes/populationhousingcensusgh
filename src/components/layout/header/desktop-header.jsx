@@ -1,13 +1,7 @@
-import {Menu, MenuItem, Stack, Toolbar, Typography} from "@mui/material";
+import {Menu, MenuItem, Stack, ToggleButton, ToggleButtonGroup, Toolbar, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectLanguage, selectUI, toggleVariant} from "../../../redux/features/ui/ui-slice.js";
-import {
-    DarkModeOutlined,
-    KeyboardArrowDownOutlined,
-    KeyboardArrowUpOutlined,
-    LanguageOutlined,
-    LightModeOutlined
-} from "@mui/icons-material";
+import {selectLanguage, selectUI, toggleVariant, toggleView} from "../../../redux/features/ui/ui-slice.js";
+import {DarkModeOutlined, GridView, LanguageOutlined, LightModeOutlined, TableRows} from "@mui/icons-material";
 import {useState} from "react";
 import {selectAuthentication} from "../../../redux/features/authentication/authentication-slice.js";
 import {useTranslation} from "react-i18next";
@@ -17,19 +11,10 @@ const DesktopHeader = () => {
     const {title, subtitle, variant} = useSelector(selectUI);
     const {authData} = useSelector(selectAuthentication);
 
-    const [menuOpen, setMenuOpen] = useState(false);
     const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
     const [el, setEl] = useState(null);
 
-    const handleMenuOpen = (e) => {
-        setMenuOpen(true);
-        setEl(e.currentTarget);
-    }
-
-    const handleClose = () => {
-        setMenuOpen(false);
-        setEl(null);
-    }
+    const {view} = useSelector(selectUI);
 
     const handleLanguageMenuOpen = (e) => {
         setLanguageMenuOpen(true);
@@ -70,12 +55,9 @@ const DesktopHeader = () => {
                     <Typography variant="body2" sx={{color: "text.secondary"}}>{subtitle}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={2} alignItems="center">
-                    <Stack onClick={handleMenuOpen} direction="row" spacing={2} alignItems="center">
-                        <Typography variant="body2" sx={{color: "text.secondary"}}>
-                            {authData.first_name}
-                        </Typography>
-                        {menuOpen ? (<KeyboardArrowUpOutlined/>) : (<KeyboardArrowDownOutlined/>)}
-                    </Stack>
+                    <Typography variant="body2" sx={{color: "text.secondary"}}>
+                        {authData.first_name}
+                    </Typography>
                     {
                         variant === 'light' ?
                             <DarkModeOutlined sx={{cursor: "pointer"}} onClick={() => dispatch(toggleVariant())}/> :
@@ -87,9 +69,22 @@ const DesktopHeader = () => {
                         <MenuItem onClick={() => handleLanguageChange('en')}>English</MenuItem>
                         <MenuItem onClick={() => handleLanguageChange('fr')}>French</MenuItem>
                     </Menu>
-                    <Menu open={menuOpen} onClose={handleClose} anchorEl={el}>
 
-                    </Menu>
+                    <ToggleButtonGroup
+                        size="small"
+                        value={view}>
+                        <ToggleButton
+                            onClick={(event, newView) => dispatch(toggleView(newView))}
+                            value="grid">
+                            <GridView/>
+                        </ToggleButton>
+                        <ToggleButton
+                            onClick={(event, newView) => dispatch(toggleView(newView))}
+                            value="table">
+                            <TableRows/>
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+
                 </Stack>
             </Stack>
         </Toolbar>
