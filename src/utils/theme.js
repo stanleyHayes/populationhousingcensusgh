@@ -26,8 +26,8 @@ const lightTheme = createTheme({
         icon: {
             primary: 'rgba(130,105,255,0.1)',
             secondary: 'rgba(159,74,247,0.1)',
-            red: 'rgba(255,63,94,0.3)',
-            green: 'rgba(126,239,143,0.3)',
+            red: 'rgba(255,63,94,0.1)',
+            green: 'rgba(126,239,143,0.1)',
         },
         text: {
             primary: "#191919",

@@ -5,9 +5,6 @@ import {useSelector} from "react-redux";
 import {selectUI} from "./redux/features/ui/ui-slice.js";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {darkTheme, lightTheme} from "./utils/theme.js";
-
-const DashboardPage = lazy(() => import('./pages/dashboard/dashboard-page.jsx'));
-
 const LoginPage = lazy(() => import('./pages/authentication/login-page.jsx'));
 const RegistrationPage = lazy(() => import('./pages/authentication/register-page.jsx'));
 const ForgotPasswordPage = lazy(() => import('./pages/authentication/forgot-password-page.jsx'));
@@ -29,14 +26,6 @@ function App() {
         <ThemeProvider theme={variant === 'dark' ? darkTheme : lightTheme}>
             <CssBaseline enableColorScheme={true}/>
             <Routes location={location}>
-                <Route
-                    path="/"
-                    element={
-                        <Suspense fallback={null}>
-                            <DashboardPage/>
-                        </Suspense>
-                    }
-                />
                 <Route
                     path="/auth/login"
                     element={
@@ -81,7 +70,7 @@ function App() {
                 />
 
                 <Route
-                    path="/households"
+                    path="/"
                     element={
                         <Suspense fallback={null}>
                             <HouseholdsPage/>

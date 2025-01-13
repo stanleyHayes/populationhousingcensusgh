@@ -31,7 +31,7 @@ export const uiSlice = createSlice({
             state.drawerOpen = action.payload;
         },
         toggleView: (state, action) => {
-            state.drawerOpen = action.payload;
+            state.view = action.payload;
         },
         toggleSidebarOpen: (state, action) => {
             state.sidebarOpen = action.payload;

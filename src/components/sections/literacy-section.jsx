@@ -4,7 +4,6 @@ import SectionHeader from "../shared/section-header.jsx";
 import LiteracyForm from "../forms/literacy-form.jsx";
 import {useSelector} from "react-redux";
 import {selectHousehold} from "../../redux/features/households/household-slice.js";
-import React from "react";
 
 const LiteracySection = () => {
 

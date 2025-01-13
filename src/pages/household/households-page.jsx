@@ -1,14 +1,24 @@
 import Layout from "../../components/layout/layout.jsx";
 import {
     Alert,
-    AlertTitle, Autocomplete,
+    AlertTitle,
+    Autocomplete,
     Box,
     Button,
     Container,
-    Divider, FormControl,
-    Grid2 as Grid, InputAdornment, InputLabel,
-    LinearProgress, MenuItem, OutlinedInput, Select, TextField, ToggleButton,
-    ToggleButtonGroup, Typography
+    Divider,
+    FormControl,
+    Grid2 as Grid,
+    InputAdornment,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    TextField,
+    ToggleButton,
+    ToggleButtonGroup,
+    Typography
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {selectHousehold} from "../../redux/features/households/household-slice.js";
@@ -22,13 +32,16 @@ import {
     BalanceOutlined,
     Cottage,
     ElectricBike,
-    Grid4x4,
+    GridView,
     LocationCity,
     SearchOutlined,
     TableRows
 } from "@mui/icons-material";
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
 import {selectDistricts} from "../../redux/features/districts/districts-slice.js";
+import CardViewContainer from "../../components/shared/cardview-container.jsx";
+import TableViewContainer from "../../components/shared/tableview-container.jsx";
+import {HELPERS} from "../../utils/helpers.js";
 
 const HouseholdsPage = () => {
 
@@ -47,6 +60,8 @@ const HouseholdsPage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const { totalVisits, completedCount, totalStarted, totalRegions, totalDistricts } = HELPERS.calculateStats(households || []);
 
     const [region, setRegion] = useState(null);
     const [district, setDistrict] = useState(null);
@@ -72,7 +87,7 @@ const HouseholdsPage = () => {
                             <Grid size={{xs: 12, md: 6, lg: 3}}>
                                 <Stat
                                     title="Total Regions"
-                                    value="2"
+                                    value={totalRegions}
                                     icon={
                                         <Cottage
                                             sx={{
@@ -91,7 +106,7 @@ const HouseholdsPage = () => {
                             <Grid size={{xs: 12, md: 6, lg: 3}}>
                                 <Stat
                                     title="Total Districts"
-                                    value="8"
+                                    value={totalDistricts}
                                     icon={
                                         <LocationCity
                                             sx={{
@@ -110,7 +125,7 @@ const HouseholdsPage = () => {
                             <Grid size={{xs: 12, md: 6, lg: 3}}>
                                 <Stat
                                     title="Completed"
-                                    value="23/30"
+                                    value={`${completedCount} / ${totalStarted}`}
                                     icon={
                                         <BalanceOutlined
                                             sx={{
@@ -129,7 +144,7 @@ const HouseholdsPage = () => {
                             <Grid size={{xs: 12, md: 6, lg: 3}}>
                                 <Stat
                                     title="Total Visits"
-                                    value="232"
+                                    value={totalVisits}
                                     icon={
                                         <ElectricBike
                                             sx={{
@@ -240,12 +255,15 @@ const HouseholdsPage = () => {
                             <Grid size={{xs: 2}}>
                                 <ToggleButtonGroup
                                     size="large"
-                                    value={view}
-                                    onClick={(event, newView) => dispatch(toggleView(newView))}>
-                                    <ToggleButton value="grid">
-                                        <Grid4x4/>
+                                    value={view}>
+                                    <ToggleButton
+                                        onClick={(event, newView) => dispatch(toggleView(newView))}
+                                        value="grid">
+                                        <GridView/>
                                     </ToggleButton>
-                                    <ToggleButton value="table">
+                                    <ToggleButton
+                                        onClick={(event, newView) => dispatch(toggleView(newView))}
+                                        value="table">
                                         <TableRows/>
                                     </ToggleButton>
                                 </ToggleButtonGroup>
@@ -276,6 +294,16 @@ const HouseholdsPage = () => {
                             />
                         )}
                     </Box>
+
+                    {households?.length > 0 && (
+                        <Box>
+                            {view === 'grid' ? (
+                                <CardViewContainer households={households} />
+                            ) : (
+                                <TableViewContainer households={households} />
+                            )}
+                        </Box>
+                    )}
 
                 </Container>
             </Box>

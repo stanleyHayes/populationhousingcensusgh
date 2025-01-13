@@ -79,7 +79,7 @@ const Sidebar = () => {
                             sx={{width: 30, height: 30}}
                         />
                         <Typography
-                            variant="body1"
+                            variant="h4"
                             sx={{color: "text.primary", fontFamily: "Playwrite HR Lijeva", fontWeight: 700}}>
                             PHC
                         </Typography>
@@ -90,24 +90,12 @@ const Sidebar = () => {
                 <SidebarLink
                     action={null}
                     right={null}
-                    text="Dashboard"
+                    text="Households"
                     path="/"
                     icon={
                         pathname === "/" ?
-                            <Dashboard sx={{color: "accent.main"}} onClick={() => navigate('/')}/> :
-                            <DashboardOutlined onClick={() => navigate('/')}/>
-                    }
-                />
-
-                <SidebarLink
-                    action={null}
-                    right={null}
-                    text="Households"
-                    path="/households"
-                    icon={
-                        pathname === "/households" ?
-                            <Home sx={{color: "accent.main"}} onClick={() => navigate('/households')}/> :
-                            <HomeOutlined onClick={() => navigate('/households')}/>
+                            <Home sx={{color: "accent.main"}} onClick={() => navigate('/')}/> :
+                            <HomeOutlined onClick={() => navigate('/')}/>
                     }
                 />
 

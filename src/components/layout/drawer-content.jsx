@@ -2,8 +2,6 @@ import {Avatar, Box, Container, Divider, Stack, Typography} from "@mui/material"
 import {useLocation, useNavigate} from "react-router";
 import {
     DarkModeOutlined,
-    Dashboard,
-    DashboardOutlined,
     Home,
     HomeOutlined,
     LightModeOutlined,
@@ -15,7 +13,7 @@ import {
 import {selectUI, toggleVariant} from "../../redux/features/ui/ui-slice.js";
 import {useDispatch, useSelector} from "react-redux";
 import logo from "../../assets/images/logo/logo.png";
-import DrawerLink from "../shared/sidebar-link.jsx";
+import DrawerLink from "../shared/drawer-link.jsx";
 
 const DrawerContent = () => {
     const {pathname} = useLocation();
@@ -55,24 +53,12 @@ const DrawerContent = () => {
                     <DrawerLink
                         action={null}
                         right={null}
-                        text="Dashboard"
+                        text="Households"
                         path="/"
                         icon={
                             pathname === "/" ?
-                                <Dashboard sx={{color: "accent.main"}} onClick={() => navigate('/')}/> :
-                                <DashboardOutlined onClick={() => navigate('/')}/>
-                        }
-                    />
-
-                    <DrawerLink
-                        action={null}
-                        right={null}
-                        text="Households"
-                        path="/households"
-                        icon={
-                            pathname === "/households" ?
-                                <Home sx={{color: "accent.main"}} onClick={() => navigate('/households')}/> :
-                                <HomeOutlined onClick={() => navigate('/households')}/>
+                                <Home sx={{color: "accent.main"}} onClick={() => navigate('/')}/> :
+                                <HomeOutlined onClick={() => navigate('/')}/>
                         }
                     />
 
