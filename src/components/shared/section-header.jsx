@@ -5,7 +5,13 @@ const SectionHeader = ({title}) => {
 
     return (
         <Box>
-            <Typography variant="h4" sx={{color: "text.primary", fontFamily: "Playwrite HR Lijeva"}}>
+            <Typography
+                variant="h4"
+                sx={{
+                    color: "text.primary",
+                    fontFamily: "Playwrite HR Lijeva",
+                    fontSize: {xs: 20, md: 24, lg: 28}
+                }}>
                 {title}
             </Typography>
 

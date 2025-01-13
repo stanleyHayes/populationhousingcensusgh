@@ -66,7 +66,7 @@ const MobileHeader = () => {
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
                     <MenuOutlined
                         sx={{
-                            borderRadius: 1,
+                            borderRadius: 0.25,
                             borderColor: "icon.primary",
                             borderStyle: "solid",
                             borderWidth: 1,
@@ -77,10 +77,9 @@ const MobileHeader = () => {
                         }}
                         onClick={() => dispatch(toggleDrawerOpen(true))}/>
                     <Typography
-                        variant="body1"
+                        variant="body2"
                         sx={{
-                            color: "text.primary",
-                            fontSize: 20,
+                            color: "primary.main",
                             fontFamily: "Playwrite HR Lijeva",
                             fontWeight: "bold"
                         }}>
