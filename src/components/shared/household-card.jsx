@@ -28,7 +28,7 @@ const HouseholdCard = ({household}) => {
 
     return (
         <Card
-            sx={{height: "100%", borderRadius: 4, display: "flex", flexDirection: "column"}}
+            sx={{height: "100%", display: "flex", flexDirection: "column", borderRadius: 0.25}}
             variant="contained"
             elevation={0}>
             <CardHeader
@@ -84,9 +84,11 @@ const HouseholdCard = ({household}) => {
                             navigate(`/households/${household.id}`);
                             dispatch(HOUSEHOLD_ACTIONS.setHousehold(household))
                         }}
+                        sx={{borderRadius: 0.25}}
                         fullWidth={true}
                         variant="outlined"
-                        size="small" color="primary"
+                        size="large"
+                        color="primary"
                         endIcon={<KeyboardArrowRightOutlined/>}>
                         View Details
                     </Button>

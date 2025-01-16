@@ -11,6 +11,7 @@ const SettingsPage = () => {
     useEffect(() => {
         dispatch(setTitle("Settings"));
         dispatch(setSubtitle("Configure your account here."));
+
     }, [dispatch]);
 
     return (

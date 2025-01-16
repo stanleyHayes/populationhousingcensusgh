@@ -15,6 +15,13 @@ const HouseholdsPage = lazy(() => import('./pages/household/households-page.jsx'
 const CreateHouseholdsPage = lazy(() => import('./pages/household/create-household-page.jsx'));
 const HouseholdDetailPage = lazy(() => import('./pages/household/household-detail-page.jsx'));
 
+const HouseholdMembersPage = lazy(() => import('./pages/household-members/household-members-page.jsx'));
+const EnumeratorsPage = lazy(() => import('./pages/enumerators/enumerators-page.jsx'));
+const EmigratedMembersPage = lazy(() => import('./pages/emigrated-members/emigrated-members-page.jsx'));
+const GeographicalAreasPage = lazy(() => import('./pages/geographical-areas/geographical-areas-page.jsx'));
+const DwellingsPage = lazy(() => import('./pages/dwellings/dwellings-page.jsx'));
+const DeceasedMembersPage = lazy(() => import('./pages/deceased-members/deceased-members-page.jsx'));
+
 const NotFoundPage = lazy(() => import('./pages/404/not-found-page.jsx'));
 
 function App() {
@@ -77,6 +84,77 @@ function App() {
                         </Suspense>
                     }
                 />
+
+
+
+                <Route
+                    path="/people"
+                    element={
+                        <Suspense fallback={null}>
+                            <HouseholdMembersPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
+                <Route
+                    path="/enumerators"
+                    element={
+                        <Suspense fallback={null}>
+                            <EnumeratorsPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
+
+                <Route
+                    path="/emigrated-members"
+                    element={
+                        <Suspense fallback={null}>
+                            <EmigratedMembersPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
+                <Route
+                    path="/dwellings"
+                    element={
+                        <Suspense fallback={null}>
+                            <DwellingsPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
+
+                <Route
+                    path="/deceased-members"
+                    element={
+                        <Suspense fallback={null}>
+                            <DeceasedMembersPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
+                <Route
+                    path="/geographical-areas"
+                    element={
+                        <Suspense fallback={null}>
+                            <GeographicalAreasPage/>
+                        </Suspense>
+                    }
+                />
+
+
+
 
                 <Route
                     path="/households/:id"

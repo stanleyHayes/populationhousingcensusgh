@@ -32,7 +32,7 @@ const DrawerLink = ({icon, text, path, right, action}) => {
                         <Typography
                             display="inline"
                             sx={{
-                                color: pathname === path ? 'text.primary' : 'text.secondary',
+                                color: pathname === path ? 'accent.main' : 'text.secondary',
                                 textTransform: "capitalize"
                             }}
                             variant="body2">

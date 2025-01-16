@@ -1,6 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 
 import uiReducer from "../features/ui/ui-slice.js";
+import deceasedHouseholdMembersReducer from "../features/deceased-members/deceased-members-slice.js";
+import dwellingsReducer from "../features/dwellings/dwellings-slice.js";
+import emigratedMembersReducer from "../features/emigrated-members/emigrated-members-slice.js";
+import enumeratorsReducer from "../features/enumerators/enumerators-slice.js";
+import geographicalAreasReducer from "../features/geographical-areas/geographical-areas-slice.js";
+import personsReducer from "../features/household-members/household-members-slice.js";
+
+
 import languagesReducer from "../features/languages/languages-slice.js";
 import educationalLevelsReducer from "../features/educational-levels/educational-levels-slice.js";
 import religionsReducer from "../features/religions/religions-slice.js";
@@ -21,6 +29,12 @@ const variant = localStorage.getItem(POPULATION_HOUSING_CENSUS_CONSTANTS.POPULAT
 
 const store = configureStore({
     reducer: {
+        deceasedMembers: deceasedHouseholdMembersReducer,
+        dwellings: dwellingsReducer,
+        emigratedHouseholdMembers: emigratedMembersReducer,
+        enumerators: enumeratorsReducer,
+        geographicalAreas: geographicalAreasReducer,
+        persons: personsReducer,
         ui: uiReducer,
         authentication: authenticationReducer,
         households: householdReducer,

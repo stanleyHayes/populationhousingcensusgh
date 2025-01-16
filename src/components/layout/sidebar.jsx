@@ -1,13 +1,13 @@
 import {Avatar, Box, Divider, Fab, Stack, Typography} from "@mui/material";
 import {
     ChevronLeft,
-    ChevronRight,
-    Dashboard,
-    DashboardOutlined,
+    ChevronRight, Coronavirus, CoronavirusOutlined, Cottage, CottageOutlined, HolidayVillage, HolidayVillageOutlined,
     Home,
     HomeOutlined,
     Logout,
-    LogoutOutlined,
+    LogoutOutlined, NaturePeople, NaturePeopleOutlined,
+    PeopleAlt,
+    PeopleAltOutlined, Security, SecurityOutlined,
     Settings,
     SettingsOutlined
 } from "@mui/icons-material";
@@ -38,7 +38,7 @@ const Sidebar = () => {
                 position: "relative",
                 overflowX: "hidden",
                 overflowY: "auto",
-                borderRadius: 8,
+                borderRadius: 2,
                 elevation: 10000
             }}>
             <Fab
@@ -98,7 +98,77 @@ const Sidebar = () => {
                             <HomeOutlined onClick={() => navigate('/')}/>
                     }
                 />
+                <SidebarLink
+                    action={null}
+                    right={null}
+                    text="People"
+                    path="/people"
+                    icon={
+                        pathname === "/people" ?
+                            <PeopleAlt sx={{color: "accent.main"}} onClick={() => navigate('/people')}/> :
+                            <PeopleAltOutlined onClick={() => navigate('/people')}/>
+                    }
+                />
 
+                  <SidebarLink
+                    action={null}
+                    right={null}
+                    text="Enumerators"
+                    path="/enumerators"
+                    icon={
+                        pathname === "/enumerators" ?
+                            <Security sx={{color: "accent.main"}} onClick={() => navigate('/enumerators')}/> :
+                            <SecurityOutlined onClick={() => navigate('/enumerators')}/>
+                    }
+                />
+
+                  <SidebarLink
+                    action={null}
+                    right={null}
+                    text="Emigrated Members"
+                    path="/emigrated-members"
+                    icon={
+                        pathname === "/emigrated-members" ?
+                            <NaturePeople sx={{color: "accent.main"}} onClick={() => navigate('/emigrated-members')}/> :
+                            <NaturePeopleOutlined onClick={() => navigate('/emigrated-members')}/>
+                    }
+                />
+
+                  <SidebarLink
+                    action={null}
+                    right={null}
+                    text="Dwellings"
+                    path="/dwellings"
+                    icon={
+                        pathname === "/dwellings" ?
+                            <Cottage sx={{color: "accent.main"}} onClick={() => navigate('/dwellings')}/> :
+                            <CottageOutlined onClick={() => navigate('/dwellings')}/>
+                    }
+                />
+
+                <SidebarLink
+                    action={null}
+                    right={null}
+                    text="Deceased Members"
+                    path="/deceased-members"
+                    icon={
+                        pathname === "/deceased-members" ?
+                            <Coronavirus sx={{color: "accent.main"}} onClick={() => navigate('/deceased-members')}/> :
+                            <CoronavirusOutlined onClick={() => navigate('/deceased-members')}/>
+                    }
+                />
+
+                <SidebarLink
+                    action={null}
+                    right={null}
+                    text="Geographical Areas"
+                    path="/geographical-areas"
+                    icon={
+                        pathname === "/geographical-areas" ?
+                            <HolidayVillage sx={{color: "accent.main"}} onClick={() => navigate('/geographical-areas')}/> :
+                            <HolidayVillageOutlined onClick={() => navigate('/geographical-areas')}/>
+                    }
+                />
             </Stack>
 
             <Divider variant="fullWidth" sx={{my: 4}}/>

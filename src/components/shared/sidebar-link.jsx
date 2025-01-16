@@ -30,7 +30,7 @@ const SidebarLink = ({icon, text, path, right, action = null}) => {
                             <Link to={path} style={{textDecoration: 'none', flexGrow: 1}}>
                                 <Typography
                                     display="inline"
-                                    sx={{color: pathname === path ? 'text.primary' : 'text.secondary'}}
+                                    sx={{color: pathname === path ? 'accent.main' : 'text.secondary'}}
                                     variant="body2">
                                     {text}
                                 </Typography>

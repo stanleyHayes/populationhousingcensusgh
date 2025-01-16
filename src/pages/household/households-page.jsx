@@ -82,7 +82,8 @@ const HouseholdsPage = () => {
                                     icon={
                                         <Cottage
                                             sx={{
-                                                borderRadius: 4,
+                                                borderRadius: 0.25,
+                                                borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
@@ -101,7 +102,8 @@ const HouseholdsPage = () => {
                                     icon={
                                         <LocationCity
                                             sx={{
-                                                borderRadius: 4,
+                                                borderRadius: 0.25,
+                                                borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
@@ -120,7 +122,8 @@ const HouseholdsPage = () => {
                                     icon={
                                         <BalanceOutlined
                                             sx={{
-                                                borderRadius: 4,
+                                                borderRadius: 0.25,
+                                                borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
@@ -139,7 +142,8 @@ const HouseholdsPage = () => {
                                     icon={
                                         <ElectricBike
                                             sx={{
-                                                borderRadius: 4,
+                                                borderRadius: 0.25,
+                                                borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",

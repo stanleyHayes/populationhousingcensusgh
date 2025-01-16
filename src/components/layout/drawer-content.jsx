@@ -1,12 +1,14 @@
 import {Avatar, Box, Container, Divider, Stack, Typography} from "@mui/material";
 import {useLocation, useNavigate} from "react-router";
 import {
-    DarkModeOutlined,
+    Coronavirus, CoronavirusOutlined,
+    Cottage, CottageOutlined,
+    DarkModeOutlined, HolidayVillage, HolidayVillageOutlined,
     Home,
     HomeOutlined,
     LightModeOutlined,
     Logout,
-    LogoutOutlined,
+    LogoutOutlined, NaturePeople, NaturePeopleOutlined, PeopleAlt, PeopleAltOutlined, Security, SecurityOutlined,
     Settings,
     SettingsOutlined
 } from "@mui/icons-material";
@@ -62,6 +64,77 @@ const DrawerContent = () => {
                         }
                     />
 
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="People"
+                        path="/people"
+                        icon={
+                            pathname === "/people" ?
+                                <PeopleAlt sx={{color: "accent.main"}} onClick={() => navigate('/people')}/> :
+                                <PeopleAltOutlined onClick={() => navigate('/people')}/>
+                        }
+                    />
+
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="Enumerators"
+                        path="/enumerators"
+                        icon={
+                            pathname === "/enumerators" ?
+                                <Security sx={{color: "accent.main"}} onClick={() => navigate('/enumerators')}/> :
+                                <SecurityOutlined onClick={() => navigate('/enumerators')}/>
+                        }
+                    />
+
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="Emigrated Members"
+                        path="/emigrated-members"
+                        icon={
+                            pathname === "/emigrated-members" ?
+                                <NaturePeople sx={{color: "accent.main"}} onClick={() => navigate('/emigrated-members')}/> :
+                                <NaturePeopleOutlined onClick={() => navigate('/emigrated-members')}/>
+                        }
+                    />
+
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="Dwellings"
+                        path="/dwellings"
+                        icon={
+                            pathname === "/dwellings" ?
+                                <Cottage sx={{color: "accent.main"}} onClick={() => navigate('/dwellings')}/> :
+                                <CottageOutlined onClick={() => navigate('/dwellings')}/>
+                        }
+                    />
+
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="Deceased Members"
+                        path="/deceased-members"
+                        icon={
+                            pathname === "/deceased-members" ?
+                                <Coronavirus sx={{color: "accent.main"}} onClick={() => navigate('/deceased-members')}/> :
+                                <CoronavirusOutlined onClick={() => navigate('/deceased-members')}/>
+                        }
+                    />
+
+                    <DrawerLink
+                        action={null}
+                        right={null}
+                        text="Geographical Areas"
+                        path="/geographical-areas"
+                        icon={
+                            pathname === "/geographical-areas" ?
+                                <HolidayVillage sx={{color: "accent.main"}} onClick={() => navigate('/geographical-areas')}/> :
+                                <HolidayVillageOutlined onClick={() => navigate('/geographical-areas')}/>
+                        }
+                    />
                 </Stack>
 
                 <Divider variant="fullWidth" sx={{my: 4}}/>
