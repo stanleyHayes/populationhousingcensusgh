@@ -2,7 +2,7 @@ import { Grid2 as Grid } from '@mui/material';
 import HouseholdCard from './household-card.jsx';
 import PropTypes from "prop-types";
 
-const CardViewContainer = ({ households }) => {
+const HouseholdCardViewContainer = ({ households }) => {
     return (
         <Grid container spacing={2}>
             {households.map((household, index) => (
@@ -14,7 +14,7 @@ const CardViewContainer = ({ households }) => {
     );
 };
 
-CardViewContainer.propTypes = {
+HouseholdCardViewContainer.propTypes = {
     households: PropTypes.arrayOf(
         PropTypes.shape({
             front_page: PropTypes.shape({
@@ -67,4 +67,4 @@ CardViewContainer.propTypes = {
     ).isRequired
 };
 
-export default CardViewContainer;
+export default HouseholdCardViewContainer;

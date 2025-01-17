@@ -4,15 +4,15 @@ import axios from "axios";
 const getGeographicalAreas = (id, region_name, district_code) => {
     return axios({
         method: 'get',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographic-areas?region_name=${region_name}&district_code=${district_code}`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographical-areas?region_name=${region_name || ""}&district_code=${district_code || ""}`,
     });
 }
 
 
-const getGeographicalArea = (id, region_name, district_code) => {
+const getGeographicalArea = (id) => {
     return axios({
         method: 'get',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographic-areas/${id}?region_name=${region_name}&district_code=${district_code}`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographical-areas/${id}`,
     });
 }
 
@@ -20,7 +20,7 @@ const getGeographicalArea = (id, region_name, district_code) => {
 const createGeographicalArea = (area) => {
     return axios({
         method: 'post',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographic-areas`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographical-areas`,
         body: area
     });
 }
@@ -29,17 +29,16 @@ const createGeographicalArea = (area) => {
 const updateGeographicalArea = (id, area) => {
     return axios({
         method: 'put',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographic-areas/${id}`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographical-areas/${id}`,
         body: area
     });
 }
 
 
-
 const deleteGeographicalArea = (id) => {
     return axios({
         method: 'delete',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographic-areas/${id}`
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/geographical-areas/${id}`
     });
 }
 

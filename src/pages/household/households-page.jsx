@@ -29,8 +29,8 @@ import Stat from "../../components/shared/stat.jsx";
 import {BalanceOutlined, Cottage, ElectricBike, LocationCity, SearchOutlined} from "@mui/icons-material";
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
 import {selectDistricts} from "../../redux/features/districts/districts-slice.js";
-import CardViewContainer from "../../components/shared/cardview-container.jsx";
-import TableViewContainer from "../../components/shared/tableview-container.jsx";
+import CardViewContainer from "../../components/shared/household-card-view-container.jsx";
+import HouseholdTableviewContainer from "../../components/shared/household-tableview-container.jsx";
 import {HELPERS} from "../../utils/helpers.js";
 
 const HouseholdsPage = () => {
@@ -290,7 +290,7 @@ const HouseholdsPage = () => {
                             {view === 'grid' ? (
                                 <CardViewContainer households={households} />
                             ) : (
-                                <TableViewContainer households={households} />
+                                <HouseholdTableviewContainer households={households} />
                             )}
                         </Box>
                     )}

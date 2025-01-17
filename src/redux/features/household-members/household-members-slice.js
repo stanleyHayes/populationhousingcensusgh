@@ -141,6 +141,6 @@ const personsSlice = createSlice({
 const {reducer} = personsSlice;
 
 export const selectPersons = state => state.persons;
-export const GEOGRAPHICAL_AREAS_ACTION_CREATORS = {deletePerson, updatePerson, createPerson, getPerson, getPersons}
+export const PERSON_ACTION_CREATORS = {deletePerson, updatePerson, createPerson, getPerson, getPersons}
 
 export default reducer;

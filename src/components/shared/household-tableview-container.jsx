@@ -2,7 +2,7 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow}
 import HouseholdRow from './household-row.jsx';
 import PropTypes from "prop-types";
 
-const TableViewContainer = ({households}) => {
+const HouseholdTableviewContainer = ({households}) => {
     return (
         <TableContainer component={Paper} elevation={0}>
             <Table size="medium">
@@ -27,7 +27,7 @@ const TableViewContainer = ({households}) => {
     );
 };
 
-TableViewContainer.propTypes = {
+HouseholdTableviewContainer.propTypes = {
     households: PropTypes.arrayOf(
         PropTypes.shape({
             front_page: PropTypes.shape({
@@ -62,4 +62,4 @@ TableViewContainer.propTypes = {
 };
 
 
-export default TableViewContainer;
+export default HouseholdTableviewContainer;

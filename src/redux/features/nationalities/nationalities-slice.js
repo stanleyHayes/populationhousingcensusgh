@@ -44,7 +44,6 @@ const initialState = {
             name: 'Ivorian',
             code: '10'
         },
-
         {
             name: 'Other ECOWAS states',
             code: '11'

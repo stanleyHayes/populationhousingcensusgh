@@ -21,6 +21,7 @@ export const uiSlice = createSlice({
     initialState,
     reducers: {
         toggleVariant: (state) => {
+            console.log(state.variant);
             state.variant = state.variant === 'light' ? 'dark' : 'light';
             localStorage.setItem(
                 POPULATION_HOUSING_CENSUS_CONSTANTS.POPULATION_HOUSING_CENSUS_THEME_VARIANT_KEY,

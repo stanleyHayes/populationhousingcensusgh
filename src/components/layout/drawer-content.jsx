@@ -25,6 +25,7 @@ const DrawerContent = () => {
 
     const {variant} = useSelector(selectUI);
 
+    console.log(variant, 'variant');
     return (
         <Box
             sx={{
@@ -95,7 +96,8 @@ const DrawerContent = () => {
                         path="/emigrated-members"
                         icon={
                             pathname === "/emigrated-members" ?
-                                <NaturePeople sx={{color: "accent.main"}} onClick={() => navigate('/emigrated-members')}/> :
+                                <NaturePeople sx={{color: "accent.main"}}
+                                              onClick={() => navigate('/emigrated-members')}/> :
                                 <NaturePeopleOutlined onClick={() => navigate('/emigrated-members')}/>
                         }
                     />
@@ -119,7 +121,8 @@ const DrawerContent = () => {
                         path="/deceased-members"
                         icon={
                             pathname === "/deceased-members" ?
-                                <Coronavirus sx={{color: "accent.main"}} onClick={() => navigate('/deceased-members')}/> :
+                                <Coronavirus sx={{color: "accent.main"}}
+                                             onClick={() => navigate('/deceased-members')}/> :
                                 <CoronavirusOutlined onClick={() => navigate('/deceased-members')}/>
                         }
                     />
@@ -131,7 +134,8 @@ const DrawerContent = () => {
                         path="/geographical-areas"
                         icon={
                             pathname === "/geographical-areas" ?
-                                <HolidayVillage sx={{color: "accent.main"}} onClick={() => navigate('/geographical-areas')}/> :
+                                <HolidayVillage sx={{color: "accent.main"}}
+                                                onClick={() => navigate('/geographical-areas')}/> :
                                 <HolidayVillageOutlined onClick={() => navigate('/geographical-areas')}/>
                         }
                     />
@@ -141,20 +145,23 @@ const DrawerContent = () => {
 
                 <Stack direction="column">
                     <Stack
+                        onClick={() => dispatch(toggleVariant())}
                         sx={{
                             py: 1,
                             px: 2,
-                            mx: 1
+                            mx: 1,
+                            cursor: 'pointer',
+                            width: '100%',
                         }} direction="row" alignItems="center" spacing={2}>
                         {
                             variant === 'light' ?
-                                <DarkModeOutlined onClick={() => dispatch(toggleVariant())}/> :
-                                <LightModeOutlined onClick={() => dispatch(toggleVariant())}/>
+                                <DarkModeOutlined/> :
+                                <LightModeOutlined/>
                         }
-                        <Typography variant="body2" sx={{color: "text.secondary"}}>
-                            {
-                                variant === 'light' ? 'Dark Theme' : 'Light Theme'
-                            }
+                        <Typography
+                            variant="body2"
+                            sx={{color: "text.secondary"}}>
+                            {variant === 'light' ? 'Dark Theme' : 'Light Theme'}
                         </Typography>
                     </Stack>
 

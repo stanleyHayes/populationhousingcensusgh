@@ -43,7 +43,7 @@ const Layout = ({children}) => {
                     maxHeight: "100vh",
                     overflowY: "scroll"
                 }}>
-                    <Box sx={{mb: {xs: 12, md: 4.1}}}>
+                    <Box sx={{mb: {xs: 6, md: 4.1}}}>
                         <Header/>
                     </Box>
                     <Box>

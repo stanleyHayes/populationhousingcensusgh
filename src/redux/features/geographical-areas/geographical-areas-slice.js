@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {GEOGRAPHICAL_AREA_API} from "../../../api/geographic-areas.api.js";
 
 const initialState = {
-    loading: false,
+    loading: true,
     error: null,
     geographicalAreas: [],
     geographicalArea: null
@@ -31,25 +31,21 @@ const getGeographicalArea = createAsyncThunk('geographicalAreas/getGeographicalA
 });
 
 
-const getGeographicalAreas = createAsyncThunk('geographicalAreas/getGeographicalAreas', async ({
-                                                                           id,
-                                                                           type_of_geographicalArea,
-                                                                           outer_wall_material,
-                                                                           floor_material,
-                                                                           geographical_area_id
-                                                                       }, thunkApi) => {
+const getGeographicalAreas = createAsyncThunk('geographicalAreas/getGeographicalAreas', async ({ region_name, district_code}, thunkApi) => {
     try {
-        const response = await GEOGRAPHICAL_AREA_API.getGeographicalAreas(id, type_of_geographicalArea, outer_wall_material, floor_material, geographical_area_id);
-
+        const response = await GEOGRAPHICAL_AREA_API.getGeographicalAreas(region_name, district_code);
+        console.log(response);
         return response.data;
     } catch (e) {
-        const error = e.message;
-        thunkApi.rejectWithValue(error);
+        return thunkApi.rejectWithValue(e.message);
     }
 });
 
 
-const updateGeographicalArea = createAsyncThunk('geographicalAreas/updateGeographicalArea', async ({id, geographicalArea}, thunkApi) => {
+const updateGeographicalArea = createAsyncThunk('geographicalAreas/updateGeographicalArea', async ({
+                                                                                                       id,
+                                                                                                       geographicalArea
+                                                                                                   }, thunkApi) => {
     try {
         const response = await GEOGRAPHICAL_AREA_API.updateGeographicalArea(id, geographicalArea);
 
@@ -83,10 +79,10 @@ const geographicalAreasSlice = createSlice({
             state.error = null;
         }).addCase(createGeographicalArea.fulfilled, (state, action) => {
             state.geographicalAreas = [action.payload, ...state.geographicalAreas];
-            state.loading = false;
+            state.loading = true;
             state.error = null;
         }).addCase(createGeographicalArea.rejected, (state, action) => {
-            state.loading = false;
+            state.loading = true;
             state.error = action.payload;
         }).addCase(getGeographicalAreas.pending, (state) => {
             state.loading = true;
@@ -98,6 +94,7 @@ const geographicalAreasSlice = createSlice({
         }).addCase(getGeographicalAreas.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+            console.log('rejected', action.payload);
         }).addCase(getGeographicalArea.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -141,6 +138,12 @@ const geographicalAreasSlice = createSlice({
 const {reducer} = geographicalAreasSlice;
 
 export const selectGeographicalAreas = state => state.geographicalAreas;
-export const GEOGRAPHICAL_AREAS_ACTION_CREATORS = {deleteGeographicalArea, updateGeographicalArea, createGeographicalArea, getGeographicalArea, getGeographicalAreas}
+export const GEOGRAPHICAL_AREAS_ACTION_CREATORS = {
+    deleteGeographicalArea,
+    updateGeographicalArea,
+    createGeographicalArea,
+    getGeographicalArea,
+    getGeographicalAreas
+}
 
 export default reducer;
