@@ -113,8 +113,9 @@ const LoginForm = () => {
                                     <Grid size={{xs: 12, md: 6}}>
                                         <Box>
                                             <FormControl variant="outlined" fullWidth={true}>
-                                                <InputLabel sx={{color: "text.secondary"}}
-                                                            htmlFor="email">Email</InputLabel>
+                                                <InputLabel
+                                                    sx={{color: "text.secondary"}}
+                                                    htmlFor="email">Email</InputLabel>
                                                 <OutlinedInput
                                                     placeholder="Enter email"
                                                     type="email"
@@ -149,8 +150,9 @@ const LoginForm = () => {
                                     <Grid size={{xs: 12, md: 6}}>
                                         <Box>
                                             <FormControl variant="outlined" fullWidth={true}>
-                                                <InputLabel sx={{color: "text.secondary"}}
-                                                            htmlFor="phone">Phone</InputLabel>
+                                                <InputLabel
+                                                    sx={{color: "text.secondary"}}
+                                                    htmlFor="phone">Phone</InputLabel>
                                                 <OutlinedInput
                                                     placeholder="Enter phone"
                                                     type="tel"

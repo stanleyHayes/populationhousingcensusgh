@@ -25,6 +25,7 @@ import {selectEmigratedHouseholdMembers} from "../../redux/features/emigrated-me
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
 import EmigratedMemberCardViewContainer from "../../components/shared/emigrated-member-card-view-container.jsx";
 import EmigratedMemberTableViewContainer from "../../components/shared/emigrated-member-tableview-container.jsx";
+import NewEmigratedMemberDialog from "../../components/dialogs/new-emigrated-member-dialog.jsx";
 
 const EmigratedMembersPage = () => {
     const {error, loading, emigratedHouseholdMembers} = useSelector(selectEmigratedHouseholdMembers);
@@ -46,7 +47,7 @@ const EmigratedMembersPage = () => {
         dispatch(setSubtitle("Glass nkoaaaaaa"));
     }, [dispatch]);
 
-    const [addDeceasedMemberDialogOpen, setAddDeceasedMemberDialogOpen] = useState(false);
+    const [addEmigratedMemberDialogOpen, setAddEmigratedMemberDialogOpen] = useState(false);
 
     return (
         <Layout>
@@ -82,13 +83,13 @@ const EmigratedMembersPage = () => {
                             </Grid>
                             <Grid size={{xs: 12, md: 4}}>
                                 <Button
-                                    onClick={() => setAddDeceasedMemberDialogOpen(true)}
+                                    onClick={() => setAddEmigratedMemberDialogOpen(true)}
                                     fullWidth={true}
                                     disableElevation={true}
                                     size="large"
                                     variant="outlined"
                                     sx={{textTransform: "none", py: 1.7}}>
-                                    Add Deceased Member
+                                    Add New Emigrated Member
                                 </Button>
                             </Grid>
                         </Grid>
@@ -139,7 +140,7 @@ const EmigratedMembersPage = () => {
                                     <InputLabel
                                         sx={{color: "text.secondary"}}
                                         htmlFor="region_name">
-                                       Destination
+                                        Destination
                                     </InputLabel>
                                     <Select
                                         required={true}
@@ -213,14 +214,14 @@ const EmigratedMembersPage = () => {
                                     image={empty}
                                     action={
                                         <Button
-                                            onClick={() => setAddDeceasedMemberDialogOpen(true)}
+                                            onClick={() => setAddEmigratedMemberDialogOpen(true)}
                                             fullWidth={true}
                                             disableElevation={true}
                                             size="large"
                                             variant="contained"
                                             type="submit"
                                             sx={{textTransform: "none"}}>
-                                            Add new Deceased Member
+                                            Add New Emigrated Member
                                         </Button>
                                     }
                                 />
@@ -240,6 +241,12 @@ const EmigratedMembersPage = () => {
                         )}
                     </Box>
                 </Container>
+                {addEmigratedMemberDialogOpen && (
+                    <NewEmigratedMemberDialog
+                        open={addEmigratedMemberDialogOpen}
+                        onClose={() => setAddEmigratedMemberDialogOpen(false)}
+                    />
+                )}
             </Box>
         </Layout>
     )

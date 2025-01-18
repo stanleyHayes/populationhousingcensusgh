@@ -16,6 +16,7 @@ const CreateHouseholdsPage = lazy(() => import('./pages/household/create-househo
 const HouseholdDetailPage = lazy(() => import('./pages/household/household-detail-page.jsx'));
 
 const HouseholdMembersPage = lazy(() => import('./pages/household-members/household-members-page.jsx'));
+const NewHouseholdMemberPage = lazy(() => import('./pages/household-members/new-household-member-page.jsx'));
 const EnumeratorsPage = lazy(() => import('./pages/enumerators/enumerators-page.jsx'));
 const EmigratedMembersPage = lazy(() => import('./pages/emigrated-members/emigrated-members-page.jsx'));
 const GeographicalAreasPage = lazy(() => import('./pages/geographical-areas/geographical-areas-page.jsx'));
@@ -161,6 +162,16 @@ function App() {
                     element={
                         <Suspense fallback={null}>
                             <HouseholdDetailPage/>
+                        </Suspense>
+                    }
+                />
+
+
+                <Route
+                    path="/household-member/new"
+                    element={
+                        <Suspense fallback={null}>
+                            <NewHouseholdMemberPage/>
                         </Suspense>
                     }
                 />

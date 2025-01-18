@@ -1,10 +1,10 @@
 import {POPULATION_HOUSING_CENSUS_CONSTANTS} from "../utils/constants.js";
 import axios from "axios";
 
-const getHouseholds = (type_of_residence, ownership_type) => {
+const getHouseholds = (type_of_dwelling, outer_wall_material, roof_material, floor_material, geographical_area_id) => {
     return axios({
         method: 'get',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/households?type_of_residence=${type_of_residence}&ownership_type=${ownership_type}`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/dwellings?type_of_dwelling=${type_of_dwelling}&outer_wall_material=${outer_wall_material}&roof_material=${roof_material}&floor_material=${floor_material}&geographical_area_id=${geographical_area_id}`,
     });
 }
 
@@ -12,25 +12,25 @@ const getHouseholds = (type_of_residence, ownership_type) => {
 const getHousehold = (id) => {
     return axios({
         method: 'get',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/households/${id}`,
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/dwellings/${id}`,
     });
 }
 
 
-const createHousehold = (household) => {
+const createHousehold = (dwelling) => {
     return axios({
         method: 'post',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/households`,
-        body: household
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/dwellings`,
+        body: dwelling
     });
 }
 
 
-const updateHousehold = (id, household) => {
+const updateHousehold = (id, dwelling) => {
     return axios({
         method: 'put',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/households/${id}`,
-        body: household
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/dwellings/${id}`,
+        body: dwelling
     });
 }
 
@@ -38,7 +38,7 @@ const updateHousehold = (id, household) => {
 const deleteHousehold = (id) => {
     return axios({
         method: 'delete',
-        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/households/${id}`
+        url: `${POPULATION_HOUSING_CENSUS_CONSTANTS.BASE_URL}/api/dwellings/${id}`
     });
 }
 

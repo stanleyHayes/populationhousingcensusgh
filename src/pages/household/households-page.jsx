@@ -29,7 +29,7 @@ import Stat from "../../components/shared/stat.jsx";
 import {BalanceOutlined, Cottage, ElectricBike, LocationCity, SearchOutlined} from "@mui/icons-material";
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
 import {selectDistricts} from "../../redux/features/districts/districts-slice.js";
-import CardViewContainer from "../../components/shared/household-card-view-container.jsx";
+import HouseholdCardViewContainer from "../../components/shared/household-card-view-container.jsx";
 import HouseholdTableviewContainer from "../../components/shared/household-tableview-container.jsx";
 import {HELPERS} from "../../utils/helpers.js";
 
@@ -288,7 +288,7 @@ const HouseholdsPage = () => {
                     {households?.length > 0 && (
                         <Box>
                             {view === 'grid' ? (
-                                <CardViewContainer households={households} />
+                                <HouseholdCardViewContainer households={households} />
                             ) : (
                                 <HouseholdTableviewContainer households={households} />
                             )}

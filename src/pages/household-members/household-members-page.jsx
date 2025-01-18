@@ -2,7 +2,6 @@ import Layout from "../../components/layout/layout.jsx";
 import {
     Alert,
     AlertTitle,
-    Autocomplete,
     Box,
     Button,
     Container,
@@ -14,37 +13,47 @@ import {
     LinearProgress,
     MenuItem,
     OutlinedInput,
-    Select,
-    TextField,
-    Typography
+    Select
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {selectDeceasedHouseholds} from "../../redux/features/deceased-members/deceased-members-slice.js";
 import {useEffect, useState} from "react";
-import {setSubtitle, setTitle} from "../../redux/features/ui/ui-slice.js";
+import {selectUI, setSubtitle, setTitle} from "../../redux/features/ui/ui-slice.js";
 import {SearchOutlined} from "@mui/icons-material";
-import {selectRegions} from "../../redux/features/regions/regions-slice.js";
-import {selectDistricts} from "../../redux/features/districts/districts-slice.js";
+import Empty from "../../components/shared/empty.jsx";
+import empty from "../../assets/images/empty.png";
+import {selectPersons} from "../../redux/features/household-members/household-members-slice.js";
+import PersonCardViewContainer from "../../components/shared/person-card-view-container.jsx";
+import PersonTableviewContainer from "../../components/shared/person-tableview-container.jsx";
+import {selectMaritalStatuses} from "../../redux/features/marital-statuses/marital-status-slice.js";
+import {selectRelationshipCodes} from "../../redux/features/relationship-codes/relationship-codes-slice.js";
+import {selectEducationalLevels} from "../../redux/features/educational-levels/educational-levels-slice.js";
 import {useNavigate} from "react-router";
 
 const DeceasedMembersPage = () => {
-    const {error, loading} = useSelector(selectDeceasedHouseholds);
+    const {error, loading, persons} = useSelector(selectPersons);
+    const {maritalStatuses} = useSelector(selectMaritalStatuses);
+    const {codes} = useSelector(selectRelationshipCodes);
+    const {educationalLevels} = useSelector(selectEducationalLevels);
+    const {view} = useSelector(selectUI);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [region, setRegion] = useState(null);
-    const [district, setDistrict] = useState(null);
     const [query, setQuery] = useState("");
-
-    const {ghanaRegions} = useSelector(selectRegions);
-    const {districts} = useSelector(selectDistricts);
+    const [sex, setSex] = useState("");
+    const [maritalStatus, setMaritalStatus] = useState("");
+    const [maritalStatusCode, setMaritalStatusCode] = useState("");
+    const [education, setEducation] = useState("");
+    const [educationCode, setEducationCode] = useState("");
+    const [relationshipToHead, setRelationshipToHead] = useState("");
+    const [relationshipToHeadCode, setRelationshipToHeadCode] = useState("");
+    const [minAge, setMinAge] = useState("");
+    const [maxAge, setMaxAge] = useState("");
 
     useEffect(() => {
         dispatch(setTitle("Household Members"));
         dispatch(setSubtitle("Efie nipa s3e wo a saaaa"));
     }, [dispatch]);
-
 
     return (
         <Layout>
@@ -58,7 +67,7 @@ const DeceasedMembersPage = () => {
                     )}
                     <Box>
                         <Grid container={true} spacing={2} justifyContent="space-between">
-                            <Grid size={{xs: 12, md: 3, lg: 3}}>
+                            <Grid size={{xs: 12, md: 4}}>
                                 <FormControl variant="outlined" fullWidth={true}>
                                     <InputLabel htmlFor="search">Search</InputLabel>
                                     <OutlinedInput
@@ -78,85 +87,188 @@ const DeceasedMembersPage = () => {
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid size={{xs: 12, md: 3, lg: 3}}>
-                                <FormControl variant="outlined" fullWidth={true}>
-                                    <InputLabel
-                                        sx={{color: "text.secondary"}}
-                                        htmlFor="region.name">
-                                        Region Name
-                                    </InputLabel>
-                                    <Select
-                                        required={true}
-                                        fullWidth={true}
-                                        label="Region Name"
-                                        value={region?.name}
-                                        name="region.name"
-                                        variant="outlined">
-                                        {ghanaRegions.map(region => {
-                                            return (
-                                                <MenuItem
-                                                    onClick={() => {
-                                                        setRegion(region);
-                                                    }}
-                                                    key={region.name}
-                                                    value={region.name}>{region.name}</MenuItem>
-                                            )
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid size={{xs: 12, md: 3, lg: 3}}>
-                                <Autocomplete
-                                    fullWidth
-                                    loading={loading}
-                                    options={districts}
-                                    value={district || {
-                                        name: '',
-                                        code: ''
-                                    }} // Ensure district is always an object
-                                    inputValue={district?.name || ''} // Bind the input value to district.name
-                                    onChange={(event, value) => {
-                                        // Set the entire district object when a value is selected
-                                        setDistrict(value || {name: '', code: ''});
-                                    }}
-                                    onInputChange={(event, value) => {
-                                        // Handle input change for free text and update only the name
-                                        const matchedOption = districts.find(option => option.name === value);
-                                        setDistrict(matchedOption || {name: value, code: ''});
-                                    }}
-                                    getOptionLabel={option => (option?.name ? option.name : '')} // Safeguard against undefined or null
-                                    renderOption={(props, option) => (
-                                        <li {...props}>
-                                            <Typography variant="body2" sx={{color: 'text.primary'}}>
-                                                {option.name}
-                                            </Typography>
-                                        </li>
-                                    )}
-                                    renderInput={params => (
-                                        <TextField
-                                            {...params}
-                                            name="district.name" // Bind to district.name
-                                            id="district-name"
-                                            fullWidth
-                                            label="Search District"
-                                            placeholder="Search District"
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid size={{xs: 12, md: 3, lg: 3}}>
+                            <Grid size={{xs: 12, md: 4}}>
                                 <Button
-                                    onClick={() => navigate('/household/new')}
+                                    onClick={() => navigate('/household-member/new')}
                                     fullWidth={true}
                                     disableElevation={true}
                                     size="large"
                                     variant="outlined"
                                     sx={{textTransform: "none", py: 1.7}}>
-                                    Create New Household
+                                    Add Household Member
                                 </Button>
                             </Grid>
                         </Grid>
+
                         <Divider variant="fullWidth" sx={{my: 4}}/>
+
+                        <Grid container={true} spacing={1} justifyContent="space-between">
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel
+                                        sx={{color: "text.secondary"}}
+                                        htmlFor="sex">
+                                        Sex
+                                    </InputLabel>
+                                    <Select
+                                        required={true}
+                                        fullWidth={true}
+                                        label="Sex"
+                                        value={sex}
+                                        name="sex"
+                                        variant="outlined">
+                                        <MenuItem onClick={() => {
+                                            setSex("Male")
+                                        }} value="Male">Male</MenuItem>
+                                        <MenuItem onClick={() => {
+                                            setSex("Female")
+                                        }} value="Female">Female</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel htmlFor="marital_status">Marital Status</InputLabel>
+                                    <Select
+                                        required={true}
+                                        fullWidth={true}
+                                        label="Marital Status"
+                                        value={maritalStatus}
+                                        name="marital_status"
+                                        variant="outlined">
+                                        {maritalStatuses.map(maritalStatus => {
+                                            return (
+                                                <MenuItem
+                                                    onClick={() => {
+                                                        setMaritalStatus(maritalStatus.name);
+                                                        setMaritalStatusCode(maritalStatus.code);
+                                                    }}
+                                                    key={maritalStatus.name}
+                                                    value={maritalStatus.name}>{maritalStatus.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel
+                                        sx={{color: "text.secondary"}}
+                                        htmlFor="educational_level">
+                                        Educational Level
+                                    </InputLabel>
+                                    <Select
+                                        required={true}
+                                        fullWidth={true}
+                                        label="Educational Level"
+                                        value={education}
+                                        name="educational_level"
+                                        variant="outlined">
+                                        {educationalLevels.map(level => {
+                                            return (
+                                                <MenuItem
+                                                    onClick={() => {
+                                                        setEducation(level.name);
+                                                        setEducationCode(level.code);
+                                                    }}
+                                                    key={level.name}
+                                                    value={level.name}>{level.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel
+                                        sx={{color: "text.secondary"}}
+                                        htmlFor="relationship_to_head">
+                                        Relationship to Head
+                                    </InputLabel>
+                                    <Select
+                                        required={true}
+                                        fullWidth={true}
+                                        label="Relationship to Head"
+                                        value={relationshipToHead}
+                                        name="relationship_to_head"
+                                        variant="outlined">
+                                        {codes.map(code => {
+                                            return (
+                                                <MenuItem
+                                                    onClick={() => {
+                                                        setRelationshipToHead(code.name);
+                                                        setRelationshipToHeadCode(code.code);
+                                                    }}
+                                                    key={code.name}
+                                                    value={code.name}>{code.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel htmlFor="search">Minimum Age</InputLabel>
+                                    <OutlinedInput
+                                        fullWidth={true}
+                                        placeholder="Minimum Age"
+                                        id="min_age"
+                                        name="min_age"
+                                        label="Minimum Age"
+                                        onChange={event => setMinAge(event.target.value)}
+                                        value={minAge}
+                                    />
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 4, lg: 2}}>
+                                <FormControl variant="outlined" fullWidth={true}>
+                                    <InputLabel htmlFor="search">Maximum Age</InputLabel>
+                                    <OutlinedInput
+                                        fullWidth={true}
+                                        placeholder="Maximum Age"
+                                        id="max_age"
+                                        name="max_age"
+                                        label="Maximum Age"
+                                        onChange={event => setMaxAge(event.target.value)}
+                                        value={maxAge}
+                                    />
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Divider variant="fullWidth" sx={{my: 4}}/>
+                        <Box>
+                            {persons?.length === 0 && (
+                                <Empty
+                                    title="No Household Members"
+                                    description="Lonely, hi Mr. lonely"
+                                    image={empty}
+                                    action={
+                                        <Button
+                                            onClick={() => navigate('/household-member/new')}
+                                            fullWidth={true}
+                                            disableElevation={true}
+                                            size="large"
+                                            variant="contained"
+                                            type="submit"
+                                            sx={{textTransform: "none"}}>
+                                            Add New Household Member
+                                        </Button>
+                                    }
+                                />
+                            )}
+                        </Box>
+
+                        {persons?.length > 0 && (
+                            <Box>
+                                {view === 'grid' ? (
+                                    <PersonCardViewContainer
+                                        persons={persons}/>
+                                ) : (
+                                    <PersonTableviewContainer
+                                        persons={persons}/>
+                                )}
+                            </Box>
+                        )}
                     </Box>
                 </Container>
             </Box>

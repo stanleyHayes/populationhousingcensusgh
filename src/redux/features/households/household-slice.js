@@ -17767,9 +17767,9 @@ const initialState = {
     }
 };
 
-const createHousehold = createAsyncThunk('households/createHousehold', async ({token}, thunkAPI) => {
+const createHousehold = createAsyncThunk('households/createHousehold', async ({household}, thunkAPI) => {
     try {
-        const response = await HOUSEHOLD_API.createHousehold({token})
+        const response = await HOUSEHOLD_API.createHousehold({household})
 
         return response.data.data;
     } catch (error) {

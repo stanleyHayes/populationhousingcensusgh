@@ -19,6 +19,7 @@ import Empty from "../../components/shared/empty.jsx";
 import empty from "../../assets/images/empty.png";
 import DeceasedMemberCardViewContainer from "../../components/shared/deceased-member-card-view-container.jsx";
 import DeceasedMembersTableViewContainer from "../../components/shared/deceased-member-tableview-container.jsx";
+import NewDeceasedMemberDialog from "../../components/dialogs/new-deceased-member-dialog.jsx";
 
 const DeceasedMembersPage = () => {
     const {error, loading, deceasedMembers} = useSelector(selectDeceasedHouseholds);
@@ -196,6 +197,12 @@ const DeceasedMembersPage = () => {
                         )}
                     </Box>
                 </Container>
+                {addDeceasedMemberDialogOpen && (
+                    <NewDeceasedMemberDialog
+                        onClose={() => setAddDeceasedMemberDialogOpen(false)}
+                        open={addDeceasedMemberDialogOpen}
+                    />
+                )}
             </Box>
         </Layout>
     )
