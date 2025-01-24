@@ -80,7 +80,7 @@ const initialState = {
         occupation: 'Software Engineer',
         occupation_description: PropTypes.string,
     },
-    step: 7,
+    step: 0,
     totalSteps: 7
 }
 
