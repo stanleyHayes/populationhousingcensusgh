@@ -71,7 +71,7 @@ const CreateHouseholdPage = () => {
         <Layout>
                 <Box sx={{mb: 4}}>
                     {loading && <LinearProgress color="secondary" variant="query"/>}
-                    <Container maxWidth="lg">
+                    <Container  sx={{pt: 4}} maxWidth="lg">
                         {error && (
                             <Alert sx={{mb: 4}} variant="standard" severity="error">
                                 <AlertTitle>{error}</AlertTitle>

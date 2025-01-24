@@ -50,7 +50,7 @@ const DwellingsPage = () => {
         <Layout>
             <Box sx={{mb: 4}}>
                 {loading && <LinearProgress variant="query" color="secondary"/>}
-                <Container>
+                <Container  sx={{pt: 4}}>
                     {error && (
                         <Alert sx={{mb: 4}} variant="standard" severity="error">
                             <AlertTitle>{error}</AlertTitle>

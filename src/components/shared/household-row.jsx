@@ -33,7 +33,6 @@ const HouseholdRow = ({household}) => {
                         }}
                         color="primary"
                         sx={{
-                            borderRadius: 0.25,
                             fontSize: 32,
                             backgroundColor: "light.primary",
                             borderWidth: 1,

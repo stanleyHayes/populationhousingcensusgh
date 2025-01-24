@@ -9,13 +9,12 @@ const SectionHeader = ({title}) => {
                 variant="h4"
                 sx={{
                     color: "text.primary",
-                    fontFamily: "Playwrite HR Lijeva",
-                    fontSize: {xs: 20, md: 24, lg: 28}
+                    fontSize: {xs: 16, md: 20, lg: 24}
                 }}>
                 {title}
             </Typography>
 
-            <Divider sx={{my: 4}}/>
+            <Divider sx={{my: 2}}/>
         </Box>
     )
 }

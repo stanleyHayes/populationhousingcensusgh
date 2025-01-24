@@ -1,18 +1,17 @@
 import {Box} from "@mui/material";
 import SectionHeader from "../shared/section-header.jsx";
 import {useSelector} from "react-redux";
+import NewHouseholdMemberICTForm from "../forms/new-household-member-ict-form.jsx";
 import {selectPersons} from "../../redux/features/household-members/household-members-slice.js";
-import BasicInfoDetails from "../shared/basic-info-details.jsx";
 
-const SummarySection = () => {
+const NewHouseholdMemberICTSection = () => {
     const {roster} = useSelector(selectPersons);
-    console.log(roster);
     return (
         <Box>
-            <SectionHeader title="Household Summary" />
-            <BasicInfoDetails roster={roster} />
+            <SectionHeader title="ICT for household member"/>
+            <NewHouseholdMemberICTForm name={roster.name}/>
         </Box>
     )
 }
 
-export default SummarySection;
+export default NewHouseholdMemberICTSection;

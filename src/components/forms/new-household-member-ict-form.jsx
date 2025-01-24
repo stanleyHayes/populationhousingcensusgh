@@ -1,19 +1,35 @@
-import {Box, FormControl, FormControlLabel, Grid2 as Grid, Radio, RadioGroup, Stack, Typography} from "@mui/material";
+import {
+    Box, Button,
+    Divider,
+    FormControl,
+    FormControlLabel,
+    Grid2 as Grid,
+    Radio,
+    RadioGroup,
+    Stack,
+    Typography
+} from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
+import {PERSON_ACTION_CREATORS, selectPersons} from "../../redux/features/household-members/household-members-slice.js";
+import {useDispatch, useSelector} from "react-redux";
 
-const ICTMemberForm = ({person}) => {
+const NewHouseholdMemberICTForm = ({name}) => {
+    const dispatch = useDispatch();
+    const {step, totalSteps, ict} = useSelector(selectPersons);
     const formik = useFormik({
         initialValues: {
-            has_phone: true,
-            has_internet: true
+            has_phone: ict?.has_phone,
+            has_internet: ict?.has_internet,
         },
         onSubmit: (values) => {
-            console.log(values);
+            dispatch(PERSON_ACTION_CREATORS.saveICT(values));
+            dispatch(PERSON_ACTION_CREATORS.next());
         },
         validationSchema: Yup.object().shape({
-            has_phone: Yup.bool().required('Person name required'),
+            has_phone: Yup.bool().required('Field required'),
             has_internet: Yup.bool().required('Field required'),
         })
     });
@@ -21,17 +37,16 @@ const ICTMemberForm = ({person}) => {
     return (
         <Box>
             <form onSubmit={formik.handleSubmit}>
-                <Grid container={true} spacing={2}>
+                <Grid  container={true} spacing={2}>
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
                             sx={{color: "text.secondary", mb: 2}}>
-                            Does {person.name} own a mobile phone?
+                            Does {name} own a mobile phone?
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
                                 value={formik.values.has_phone}
                                 name="has_phone">
                                 <Stack direction="row" spacing={2}>
@@ -60,12 +75,11 @@ const ICTMemberForm = ({person}) => {
                         <Typography
                             variant="body2"
                             sx={{color: "text.secondary", mb: 2}}>
-                            Does {person.name} own a mobile phone?
+                            Does {name} own a mobile phone?
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
                                 value={formik.values.has_internet}
                                 name="has_internet">
                                 <Stack direction="row" spacing={2}>
@@ -91,16 +105,43 @@ const ICTMemberForm = ({person}) => {
                         </FormControl>
                     </Grid>
                 </Grid>
+
+                <Box>
+                    <Divider sx={{my: 4}}/>
+                    <Grid container={true} justifyContent="space-between" spacing={2}>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                startIcon={<ChevronLeftOutlined/>}
+                                fullWidth={true}
+                                disabled={step === 0}
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => dispatch(PERSON_ACTION_CREATORS.previous())}>
+                                Previous
+                            </Button>
+                        </Grid>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                type="submit"
+                                endIcon={<ChevronRightOutlined/>}
+                                disabled={step === totalSteps}
+                                variant="contained"
+                                color="primary"
+                                disableElevation={true}
+                                fullWidth={true}>
+                                Next
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
             </form>
         </Box>
     )
 }
 
-ICTMemberForm.propTypes = {
-    person: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-    }).isRequired,
+NewHouseholdMemberICTForm.propTypes = {
+    name: PropTypes.string.isRequired,
 };
 
 
-export default ICTMemberForm;
+export default NewHouseholdMemberICTForm;

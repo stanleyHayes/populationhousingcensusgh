@@ -25,7 +25,6 @@ const DrawerContent = () => {
 
     const {variant} = useSelector(selectUI);
 
-    console.log(variant, 'variant');
     return (
         <Box
             sx={{

@@ -67,7 +67,7 @@ const HouseholdsPage = () => {
         <Layout>
             <Box sx={{mb: 4}}>
                 {loading && <LinearProgress variant="query" color="secondary"/>}
-                <Container>
+                <Container sx={{pt: 4}}>
                     {error && (
                         <Alert sx={{mb: 4}} variant="standard" severity="error">
                             <AlertTitle>{error}</AlertTitle>
@@ -82,13 +82,13 @@ const HouseholdsPage = () => {
                                     icon={
                                         <Cottage
                                             sx={{
-                                                borderRadius: 0.25,
                                                 borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
                                                 padding: 0.5,
-                                                fontSize: 32
+                                                fontSize: 32,
+                                                borderRadius: 1,
                                             }}
                                             color="secondary"
                                         />
@@ -102,13 +102,13 @@ const HouseholdsPage = () => {
                                     icon={
                                         <LocationCity
                                             sx={{
-                                                borderRadius: 0.25,
                                                 borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
                                                 padding: 0.5,
-                                                fontSize: 32
+                                                fontSize: 32,
+                                                borderRadius: 1,
                                             }}
                                             color="secondary"
                                         />
@@ -122,13 +122,13 @@ const HouseholdsPage = () => {
                                     icon={
                                         <BalanceOutlined
                                             sx={{
-                                                borderRadius: 0.25,
                                                 borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
                                                 padding: 0.5,
-                                                fontSize: 32
+                                                fontSize: 32,
+                                                borderRadius: 1,
                                             }}
                                             color="secondary"
                                         />
@@ -142,13 +142,13 @@ const HouseholdsPage = () => {
                                     icon={
                                         <ElectricBike
                                             sx={{
-                                                borderRadius: 0.25,
                                                 borderStyle: "solid",
                                                 borderColor: "icon.secondary",
                                                 borderWidth: 1,
                                                 backgroundColor: "light.secondary",
                                                 padding: 0.5,
-                                                fontSize: 32
+                                                fontSize: 32,
+                                                borderRadius: 1,
                                             }}
                                             color="secondary"
                                         />

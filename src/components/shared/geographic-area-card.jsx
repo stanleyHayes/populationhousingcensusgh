@@ -15,10 +15,9 @@ import {DeleteForeverOutlined, EditOutlined, VisibilityOutlined} from "@mui/icon
 
 const GeographicAreaCard = ({geographicArea}) => {
 
-
     return (
         <Card
-            sx={{height: "100%", display: "flex", flexDirection: "column", borderRadius: 0.25}}
+            sx={{height: "100%", display: "flex", flexDirection: "column"}}
             variant="contained"
             elevation={0}>
             <CardContent sx={{flexGrow: 1}}>
@@ -63,9 +62,8 @@ const GeographicAreaCard = ({geographicArea}) => {
                         <Tooltip title={`View details of geographic area in ${geographicArea.region_name}`}>
                             <Button
                                 onClick={() => {
-                                    setAddGeographicAreaDialogOpen(true)
+
                                 }}
-                                sx={{borderRadius: 0.25}}
                                 fullWidth={true}
                                 variant="outlined"
                                 size="large"
@@ -80,7 +78,6 @@ const GeographicAreaCard = ({geographicArea}) => {
                             <Button
                                 onClick={() => {
                                 }}
-                                sx={{borderRadius: 0.25}}
                                 fullWidth={true}
                                 variant="outlined"
                                 size="large"
@@ -96,7 +93,6 @@ const GeographicAreaCard = ({geographicArea}) => {
                                 onClick={() => {
 
                                 }}
-                                sx={{borderRadius: 0.25}}
                                 fullWidth={true}
                                 variant="outlined"
                                 size="large"

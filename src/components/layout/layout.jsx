@@ -27,7 +27,7 @@ const Layout = ({children}) => {
                 <Box
                     sx={{
                         display: {xs: "none", md: "flex"},
-                        flexBasis: {xs: "0%", md: sidebarOpen ? "22%" : "5.8%", lg: sidebarOpen ? "25.5%" : "5.8%"},
+                        flexBasis: {xs: "0%", md: sidebarOpen ? "22%" : "5.8%", lg: sidebarOpen ? "20.5%" : "5.8%"},
                         maxHeight: "100vh",
                         justifyContent: {xs: "center", md: "flex-start"},
                         paddingY: 4,
@@ -37,7 +37,7 @@ const Layout = ({children}) => {
                 </Box>
                 <Box sx={{
                     display: "block",
-                    flexBasis: {xs: "100%", md: sidebarOpen ? "68%" : "84.20%", lg: sidebarOpen ? "75.5%" : "94.2%"},
+                    flexBasis: {xs: "100%", md: sidebarOpen ? "68%" : "84.20%", lg: sidebarOpen ? "80.5%" : "94.2%"},
                     width: "100%",
                     backgroundColor: "background.default",
                     maxHeight: "100vh",
@@ -65,7 +65,7 @@ const Layout = ({children}) => {
 }
 
 Layout.propTypes = {
-    children: PropTypes.array.isRequired,
+    children: PropTypes.any.isRequired,
 }
 
 export default Layout;

@@ -17,7 +17,7 @@ const SettingsPage = () => {
     return (
         <Layout>
             <Box>
-                <Container>
+                <Container  sx={{pt: 4}}>
                     <Typography align="center" variant="h5">
                         Settings
                     </Typography>

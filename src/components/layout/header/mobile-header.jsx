@@ -66,14 +66,14 @@ const MobileHeader = () => {
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
                     <MenuOutlined
                         sx={{
-                            borderRadius: 0.25,
                             borderColor: "icon.primary",
                             borderStyle: "solid",
                             borderWidth: 1,
                             p: 0.5,
                             fontSize: 32,
                             color: "primary.main",
-                            backgroundColor: "light.primary"
+                            backgroundColor: "light.primary",
+                            borderRadius: 1,
                         }}
                         onClick={() => dispatch(toggleDrawerOpen(true))}/>
                     <Typography

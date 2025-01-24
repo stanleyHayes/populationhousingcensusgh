@@ -51,7 +51,7 @@ const EnumeratorsPage = () => {
         <Layout>
             <Box sx={{mb: 4}}>
                 {loading && <LinearProgress variant="query" color="secondary"/>}
-                <Container>
+                <Container  sx={{pt: 4}}>
                     {error && (
                         <Alert sx={{mb: 4}} variant="standard" severity="error">
                             <AlertTitle>{error}</AlertTitle>
@@ -167,7 +167,7 @@ const EnumeratorsPage = () => {
                                 <FormControl variant="outlined" fullWidth={true}>
                                     <InputLabel htmlFor="hired_date">Hired Date</InputLabel>
                                     <DatePicker
-                                        label="Date of Birth"
+                                        label="Hired Date"
                                         value={hiredDate ? dayjs(hiredDate) : null} // Bind to Formik value, safely handle null
                                         onChange={(date) => {
                                             setHiredDate(date ? date.toISOString() : null); // Save as ISO string or reset

@@ -5,7 +5,7 @@ const DeceasedMember = ({deceasedMember}) => {
 
     return (
         <Card
-            sx={{height: "100%", display: "flex", flexDirection: "column", borderRadius: 0.25}}
+            sx={{height: "100%", display: "flex", flexDirection: "column"}}
             variant="contained"
             elevation={0}>
             <CardContent sx={{flexGrow: 1}}>

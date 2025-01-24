@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {POPULATION_HOUSING_CENSUS_CONSTANTS} from "../../../utils/constants.js";
 
 const initialState = {
-    variant: 'light',
+    variant: 'dark',
     drawerOpen: false,
     sidebarOpen: true,
     title: '',
@@ -57,7 +57,7 @@ export const uiSlice = createSlice({
     }
 });
 
-export const {toggleDrawerOpen, toggleSidebarOpen, toggleVariant, setSubtitle, setTitle, selectLanguage, initialize, toggleView} = uiSlice.actions;
+export const {toggleDrawerOpen, toggleSidebarOpen, toggleVariant, setSubtitle, setTitle, selectLanguage, toggleView} = uiSlice.actions;
 export const selectUI = state => state.ui;
 const reducer = uiSlice.reducer;
 export default reducer;
