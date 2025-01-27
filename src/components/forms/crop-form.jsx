@@ -1,18 +1,21 @@
 import {
-    Box,
+    Autocomplete,
+    Box, Button,
     FormControl,
     Grid2 as Grid,
-    InputAdornment,
     InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
+    TextField,
     Typography
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {ErrorOutline, PersonOutline} from "@mui/icons-material";
+import {ErrorOutline} from "@mui/icons-material";
 import PropTypes from "prop-types";
+import {useSelector} from "react-redux";
+import {selectCropCodes} from "../../redux/features/crop-codes/crop-codes-slice.js";
 
 const CropForm = ({handleCropAdd, onClose}) => {
     const formik = useFormik({
@@ -31,95 +34,69 @@ const CropForm = ({handleCropAdd, onClose}) => {
             actions.resetForm();
         },
         validationSchema: Yup.object().shape({
-            crop_type: Yup.string().required('Person name required'),
+            crop_type: Yup.string().required('Field required'),
             crop_code: Yup.number().required('Field required'),
             farm_size: Yup.number().required('Field required'),
             measurement_unit: Yup.string().required('Field required'),
-            cropping_type: Yup.string()
-                .oneOf([], "Must be one of the following")
-                .required('Field required'),
+            cropping_type: Yup.string().required('Field required'),
         })
     });
 
+    const {loading, cropCodes} = useSelector(selectCropCodes);
+
+    console.log(formik.values)
     return (
         <Box>
             <form onSubmit={formik.handleSubmit}>
-                <Grid container={true} spacing={2}>
+                <Grid sx={{mb: 4}} container={true} spacing={2}>
                     <Grid size={{xs: 12, md: 6}}>
-                        <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="crop_type">
-                                Type of Crop and Tree Planting
-                            </InputLabel>
-                            <OutlinedInput
-                                placeholder="Enter Type of Crop and Tree Planting"
-                                type="text"
-                                name="crop_type"
-                                id="crop_type"
-                                label="Type of Crop and Tree Planting"
-                                required={true}
-                                value={formik.values.crop_type}
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                                error={formik.touched.crop_type && formik.errors.crop_type}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
+                        <Autocomplete
+                            fullWidth
+                            loading={loading}
+                            options={cropCodes}
+                            value={formik.values.crop_type.activity} // Ensure the selection is always an object
+                            inputValue={formik.values.crop_type.activity} // Bind input value to selected activity
+                            onChange={(event, value) => {
+                                console.log(value)
+                                if (value) {
+                                    formik.setFieldValue("crop_type", value.activity);
+                                    formik.setFieldValue("crop_code", value.code);
+                                } else {
+                                    formik.setFieldValue("crop_type", "");
+                                    formik.setFieldValue("crop_code", "");
                                 }
-                                endAdornment={
-                                    formik.touched.crop_type && formik.errors.crop_type ? (
-                                        <ErrorOutline/>
-                                    ) : null
-                                }
-                            />
-                            {formik.touched.crop_type && formik.errors.crop_type && (
-                                <Typography variant="body2" color="error">
-                                    {formik.errors.crop_type}
-                                </Typography>
+                            }}
+                            onInputChange={(event, value) => {
+                                // Handle input change to update the state
+                                const matchedOption = cropCodes.find(option => option.activity === value);
+                                formik.setFieldValue("crop_type", matchedOption ? matchedOption.activity : value);
+                                formik.setFieldValue("crop_code", matchedOption ? matchedOption.code : '');
+                            }}
+                            getOptionLabel={option => (option?.activity ? option.activity : '')} // Display activity name
+                            renderOption={(props, option) => (
+                                <li {...props}>
+                                    <Typography variant="body2" sx={{ color: 'text.primary' }}>
+                                        {option.activity} - {option.code}
+                                    </Typography>
+                                </li>
                             )}
-                        </FormControl>
-                    </Grid>
-                    <Grid size={{xs: 12, md: 6}}>
-                        <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel
-                                sx={{color: "text.secondary"}}
-                                htmlFor="relationship_to_head">
-                                Crop Code
-                            </InputLabel>
-                            <OutlinedInput
-                                placeholder="Enter Crop Code"
-                                type="text"
-                                name="crop_code"
-                                id="crop_code"
-                                label="Crop Code"
-                                required={true}
-                                value={formik.values.crop_code}
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                                error={formik.touched.crop_code && formik.errors.crop_code}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
-                                endAdornment={
-                                    formik.touched.crop_code && formik.errors.crop_type ? (
-                                        <ErrorOutline/>
-                                    ) : null
-                                }
-                            />
-                            {formik.touched.crop_code && formik.errors.crop_code && (
-                                <Typography variant="body2" color="error">
-                                    {formik.errors.crop_code}
-                                </Typography>
+                            renderInput={params => (
+                                <TextField
+                                    {...params}
+                                    name="crop_type"
+                                    id="crop-or-tree-planting-type"
+                                    fullWidth
+                                    label="Search Crop or Tree Planting Type"
+                                    placeholder="Search Crop or Tree Planting Type"
+                                />
                             )}
-                        </FormControl>
+                        />
                     </Grid>
                     <Grid size={{xs: 12, md: 4}}>
                         <FormControl variant="outlined" fullWidth={true}>
                             <InputLabel
                                 sx={{color: "text.secondary"}}
-                                htmlFor="sex">
+                                htmlFor="farm_size">
                                 Farm Size
                             </InputLabel>
                             <OutlinedInput
@@ -133,11 +110,6 @@ const CropForm = ({handleCropAdd, onClose}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.farm_size && formik.errors.farm_size}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.farm_size && formik.errors.farm_size ? (
                                         <ErrorOutline/>
@@ -155,15 +127,15 @@ const CropForm = ({handleCropAdd, onClose}) => {
                         <FormControl variant="outlined" fullWidth={true}>
                             <InputLabel
                                 sx={{color: "text.secondary"}}
-                                htmlFor="status">
-                                Status
+                                htmlFor="measurement_unit">
+                                Measurement Unit
                             </InputLabel>
                             <Select
                                 required={true}
                                 fullWidth={true}
                                 value={formik.values.measurement_unit}
                                 name="measurement_unit"
-                                label="Type of Cropping"
+                                label="Measurement Unit"
                                 variant="outlined">
                                 <MenuItem
                                     onClick={() => {
@@ -240,7 +212,7 @@ const CropForm = ({handleCropAdd, onClose}) => {
                                         formik.setFieldValue('cropping_type', "Inter Cropping")
                                         formik.setFieldValue('cropping_type_code', '2')
                                     }}
-                                    value="Mixed Cropping">
+                                    value="Inter Cropping">
                                     Inter Cropping
                                 </MenuItem>
                                 <MenuItem
@@ -260,6 +232,15 @@ const CropForm = ({handleCropAdd, onClose}) => {
                         </FormControl>
                     </Grid>
                 </Grid>
+                <Button
+                    fullWidth={true}
+                    disableElevation={true}
+                    size="large"
+                    variant="contained"
+                    type="submit"
+                    sx={{textTransform: "none"}}>
+                    Add Crop
+                </Button>
             </form>
         </Box>
     )

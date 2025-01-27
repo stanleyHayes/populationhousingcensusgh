@@ -42,8 +42,16 @@ const EmigrationMembers = ({members, handleMemberRemove}) => {
                                     <TableCell>{member.departure_year}</TableCell>
                                     <TableCell>{member.activity_abroad}</TableCell>
                                     <TableCell>
-                                        <VisibilityOutlined onClick={() => handleMemberDetailClick(member)} color="primary"/>
-                                        <DeleteOutlined onClick={() => handleMemberRemove(member)} color="error"/>
+                                        <VisibilityOutlined
+                                            sx={{cursor: "pointer"}}
+                                            onClick={() => handleMemberDetailClick(member)}
+                                            color="primary"
+                                        />
+                                        <DeleteOutlined
+                                            sx={{cursor: "pointer"}}
+                                            onClick={() => handleMemberRemove(member)}
+                                            color="error"
+                                        />
                                     </TableCell>
                                 </TableRow>
                             )

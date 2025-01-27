@@ -1,32 +1,47 @@
 import {
-    Box,
+    Box, Button,
     FormControl,
     FormControlLabel,
     Grid2 as Grid,
-    InputAdornment,
     InputLabel,
     OutlinedInput,
     Radio,
-    RadioGroup, Stack,
+    RadioGroup,
+    Stack,
     Typography
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {ErrorOutline, PersonOutline} from "@mui/icons-material";
+import {ErrorOutline} from "@mui/icons-material";
+import {useSelector} from "react-redux";
+import {selectHousehold} from "../../redux/features/households/household-slice.js";
+import PropTypes from "prop-types";
 
-const AgricultureActivitiesForm = () => {
+const AgricultureActivitiesForm = ({setIsValidated, saveFormValues, isSaved}) => {
+
+    const {agriculture} = useSelector(selectHousehold);
+
     const formik = useFormik({
         initialValues: {
-            farms_crops: true,
-            grows_trees: false,
-            rear_livestock: false,
-            farms_fish: false,
+            farms_crops: agriculture?.farms_crops,
+            grows_trees: agriculture?.grows_trees,
+            rear_livestock: agriculture?.rear_livestock,
+            farms_fish: agriculture?.farms_fish,
             family_farming_count: {
-                male: 0,
-                female: 0
+                male: agriculture?.family_farming_count?.male,
+                female: agriculture?.family_farming_count?.female
             }
         },
-        onSubmit: (values, actions) => {
+        onSubmit: async (values) => {
+            const errors = await formik.validateForm();
+            if (Object.keys(errors).length === 0) {
+                setIsValidated(true);
+                console.log('has been validated')
+                saveFormValues(values);
+                console.log(values)
+            } else {
+                console.error("Validation errors:", errors);
+            }
         },
         validationSchema: Yup.object().shape({
             farms_crops: Yup.bool().required('Person name required'),
@@ -34,17 +49,16 @@ const AgricultureActivitiesForm = () => {
             rear_livestock: Yup.bool().required('Field required'),
             farms_fish: Yup.bool().required('Field required'),
             family_farming_count: Yup.object().shape({
-                grows_trees: Yup.number().required('Field required'),
-                rear_livestock: Yup.number().required('Field required'),
+                male: Yup.number().required('Field required'),
+                female: Yup.number().required('Field required'),
             })
         })
     });
 
-
     return (
         <Box>
             <form onSubmit={formik.handleSubmit}>
-                <Grid sx={{mb: 4}} container={true} spacing={2}>
+                <Grid sx={{mb: 2}} container={true} spacing={2}>
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -54,8 +68,6 @@ const AgricultureActivitiesForm = () => {
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
                                 value={formik.values.farms_crops}
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
                                 name="farms_crops">
                                 <Stack direction="row" spacing={2}>
                                     <FormControlLabel
@@ -87,8 +99,7 @@ const AgricultureActivitiesForm = () => {
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
+                                onChange={(event, value) => formik.setFieldValue('grows_trees', value === 'true')}
                                 value={formik.values.grows_trees}
                                 name="grows_trees">
                                 <Stack direction="row" spacing={2}>
@@ -121,8 +132,6 @@ const AgricultureActivitiesForm = () => {
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
                                 value={formik.values.rear_livestock}
                                 name="rear_livestock">
                                 <Stack direction="row" spacing={2}>
@@ -155,8 +164,6 @@ const AgricultureActivitiesForm = () => {
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <RadioGroup
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue={false}
                                 value={formik.values.farms_fish}
                                 name="farms_fish">
                                 <Stack direction="row" spacing={2}>
@@ -182,7 +189,7 @@ const AgricultureActivitiesForm = () => {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Box>
+                <Box sx={{mb: 2}}>
                     <Typography variant="body2" sx={{color: "text.secondary", mb: 4}}>
                         How many household members cultivate crops or tree plant, rear livestock or breed fish for sale
                         or family gain?
@@ -204,11 +211,6 @@ const AgricultureActivitiesForm = () => {
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     error={formik.touched.family_farming_count?.male && formik.errors.family_farming_count?.male}
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <PersonOutline/>
-                                        </InputAdornment>
-                                    }
                                     endAdornment={
                                         formik.touched.family_farming_count?.male && formik.errors.family_farming_count?.male ? (
                                             <ErrorOutline/>
@@ -238,11 +240,6 @@ const AgricultureActivitiesForm = () => {
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     error={formik.touched.family_farming_count?.female && formik.errors.family_farming_count?.female}
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <PersonOutline/>
-                                        </InputAdornment>
-                                    }
                                     endAdornment={
                                         formik.touched.family_farming_count?.female && formik.errors.family_farming_count?.female ? (
                                             <ErrorOutline/>
@@ -258,9 +255,26 @@ const AgricultureActivitiesForm = () => {
                         </Grid>
                     </Grid>
                 </Box>
+
+                <Button
+                    type="submit"
+                    disabled={isSaved}
+                    disableElevation={true}
+                    size="large"
+                    variant="outlined"
+                    sx={{textTransform: "none", py: 1.7}}>
+                    {isSaved ? 'Saved': 'Save Values'}
+                </Button>
+
             </form>
         </Box>
     )
+}
+
+AgricultureActivitiesForm.propTypes = {
+    setIsValidated: PropTypes.func.isRequired,
+    saveFormValues: PropTypes.func.isRequired,
+    isSaved: PropTypes.bool.isRequired,
 }
 
 export default AgricultureActivitiesForm;

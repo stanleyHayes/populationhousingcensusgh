@@ -69,19 +69,19 @@ const CreateHouseholdPage = () => {
 
     return (
         <Layout>
-                <Box sx={{mb: 4}}>
-                    {loading && <LinearProgress color="secondary" variant="query"/>}
-                    <Container  sx={{pt: 4}} maxWidth="lg">
-                        {error && (
-                            <Alert sx={{mb: 4}} variant="standard" severity="error">
-                                <AlertTitle>{error}</AlertTitle>
-                            </Alert>
-                        )}
-                        <Box>
-                            {renderSection(step)}
-                        </Box>
-                    </Container>
-                </Box>
+            <Box sx={{mb: 4}}>
+                {loading && <LinearProgress color="secondary" variant="query"/>}
+                <Container sx={{pt: 4}} maxWidth="lg">
+                    {error && (
+                        <Alert sx={{mb: 4}} variant="standard" severity="error">
+                            <AlertTitle>{error}</AlertTitle>
+                        </Alert>
+                    )}
+                    <Box>
+                        {renderSection(step)}
+                    </Box>
+                </Container>
+            </Box>
         </Layout>
     )
 }

@@ -1,5 +1,4 @@
 import {Box, Button, Divider, Grid2 as Grid, Typography} from "@mui/material";
-import SectionFooter from "../shared/section-footer.jsx";
 import SectionHeader from "../shared/section-header.jsx";
 import {useState} from "react";
 import Empty from "../shared/empty.jsx";
@@ -9,13 +8,22 @@ import AddCropDialog from "../dialogs/add-crop-dialog.jsx";
 import Livestock from "../shared/livestocks.jsx";
 import Crops from "../shared/crops.jsx";
 import AgricultureActivitiesForm from "../forms/agriculture-activities-form.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
 
 const AgricultureSection = () => {
-    const [crops, setCrops] = useState([]);
-    const [livestockOrFisheries, setLivestockOrFisheries] = useState([]);
+    const dispatch = useDispatch();
+    const {agriculture, step, totalSteps} = useSelector(selectHousehold);
+    const [crops, setCrops] = useState([...agriculture.crops]);
+    const [livestockOrFisheries, setLivestockOrFisheries] = useState([...agriculture.livestock_or_fisheries]);
 
     const [addCropDialogOpen, setAddCropDialogOpen] = useState(false);
     const [addLivestockDialogOpen, setAddLivestockDialogOpen] = useState(false);
+
+    const [isValidated, setIsValidated] = useState(false);
+    const [values, setValues] = useState({});
+    const [isSaved, setIsSaved] = useState(false);
 
     const handleCropAdd = crop => {
         setCrops((prevCrops) => [...prevCrops, {id: crops.length + 1, ...crop}]);
@@ -31,6 +39,24 @@ const AgricultureSection = () => {
         setLivestockOrFisheries(crops.filter(c => c.id !== livestockOrFish.id));
     }
 
+    const handleSaveAgriculture = () => {
+        if (isValidated) {
+            dispatch(HOUSEHOLD_ACTIONS.saveAgriculture({
+                ...values,
+                crops,
+                livestock_or_fisheries: livestockOrFisheries
+            }));
+            dispatch(HOUSEHOLD_ACTIONS.next());
+        }else{
+            console.log('not validated', isValidated)
+        }
+    }
+
+    const saveFormValues = values => {
+        setIsSaved(true);
+        setValues(values);
+    }
+
     return (
         <Box>
             <SectionHeader title="Agricultural Activity"/>
@@ -42,10 +68,14 @@ const AgricultureSection = () => {
             </Box>
 
             <Box>
-                <AgricultureActivitiesForm />
+                <AgricultureActivitiesForm
+                    isSaved={isSaved}
+                    setIsValidated={setIsValidated}
+                    saveFormValues={saveFormValues}
+                />
             </Box>
 
-            <Box>
+            <Box sx={{mb: 4}}>
                 <Box>
                     {crops.length === 0 && (
                         <Empty
@@ -117,6 +147,7 @@ const AgricultureSection = () => {
                     />
                 )}
             </Box>
+
             {livestockOrFisheries.length > 0 && (
                 <Box>
                     <Grid sx={{mb: 2}} container={true} spacing={2} justifyContent="space-between">
@@ -144,7 +175,38 @@ const AgricultureSection = () => {
                     <Livestock livestock={livestockOrFisheries} handleLivestockRemove={handleFisheriesRemove}/>
                 </Box>
             )}
-            <SectionFooter/>
+
+            <Box>
+                <Divider variant="fullWidth" sx={{my: 2}}/>
+
+                <Box>
+                    <Grid container={true} justifyContent="space-between" spacing={2}>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                startIcon={<ChevronLeftOutlined/>}
+                                fullWidth={true}
+                                disabled={step === 0}
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                Previous
+                            </Button>
+                        </Grid>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                onClick={handleSaveAgriculture}
+                                endIcon={<ChevronRightOutlined/>}
+                                disabled={step === totalSteps || !isSaved}
+                                variant="contained"
+                                color="primary"
+                                disableElevation={true}
+                                fullWidth={true}>
+                                {!isSaved ? 'Save Values': 'Next'}
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Box>
 
 
             {addCropDialogOpen && (

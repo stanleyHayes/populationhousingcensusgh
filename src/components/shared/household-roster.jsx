@@ -2,7 +2,7 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow}
 import {DeleteOutlined} from "@mui/icons-material";
 import PropTypes from "prop-types";
 
-const HouseholdRoster = ({ members, handleMemberRemove }) => {
+const HouseholdRoster = ({members, handleMemberRemove}) => {
     return (
         <TableContainer component={Paper} elevation={0}>
             <Table>
@@ -26,7 +26,11 @@ const HouseholdRoster = ({ members, handleMemberRemove }) => {
                                 <TableCell>{member.sex}</TableCell>
                                 <TableCell>{member.status}</TableCell>
                                 <TableCell>
-                                    <DeleteOutlined onClick={() => handleMemberRemove(member)} color="error" />
+                                    <DeleteOutlined
+                                        sx={{cursor: "pointer"}}
+                                        onClick={() => handleMemberRemove(member)}
+                                        color="error"
+                                    />
                                 </TableCell>
                             </TableRow>
                         )

@@ -1,5 +1,5 @@
 import {
-    Box,
+    Box, Button, Divider,
     FormControl,
     FormControlLabel,
     Grid2 as Grid,
@@ -10,18 +10,21 @@ import {
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useDispatch} from "react-redux";
-import {HOUSEHOLD_ACTIONS} from "../../redux/features/households/household-slice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
 
 const HouseholdICTForm = () => {
     const dispatch = useDispatch();
+    const {ict, step, totalSteps} = useSelector(selectHousehold);
     const formik = useFormik({
         initialValues: {
-            has_fixed_telephone: false,
-            has_computer: false,
+            has_fixed_telephone: ict?.has_fixed_telephone,
+            has_computer: ict?.has_computer,
         },
         onSubmit: (values) => {
-            dispatch(HOUSEHOLD_ACTIONS.saveHouseholdICT({...values}));
+            dispatch(HOUSEHOLD_ACTIONS.saveHouseholdICT(values));
+            dispatch(HOUSEHOLD_ACTIONS.next());
         },
         validationSchema: Yup.object().shape({
             has_fixed_telephone: Yup.bool().required('Field required'),
@@ -106,6 +109,36 @@ const HouseholdICTForm = () => {
                         </FormControl>
                     </Grid>
                 </Grid>
+
+                <Divider variant="fullWidth" sx={{my: 2}}/>
+
+                <Box>
+                    <Grid container={true} justifyContent="space-between" spacing={2}>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                startIcon={<ChevronLeftOutlined/>}
+                                fullWidth={true}
+                                disabled={step === 0}
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                Previous
+                            </Button>
+                        </Grid>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                type="submit"
+                                endIcon={<ChevronRightOutlined/>}
+                                disabled={step === totalSteps}
+                                variant="contained"
+                                color="primary"
+                                disableElevation={true}
+                                fullWidth={true}>
+                                Next
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
             </form>
         </Box>
     )

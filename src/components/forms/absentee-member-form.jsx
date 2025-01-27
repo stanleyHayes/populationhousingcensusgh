@@ -74,11 +74,6 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.name && formik.errors.name}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.name && formik.errors.name ? (
                                         <ErrorOutline/>
@@ -112,8 +107,7 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                                             onClick={() => {
                                                 formik.setFieldValue('relationship_to_head', code.name)
                                                 formik.setFieldValue('relationship_code', code.code)
-                                            }
-                                            }
+                                            }}
                                             key={code.code}
                                             value={code.name}>
                                             {code.name}
@@ -148,7 +142,7 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                                             formik.setFieldValue('destination', region.name)
                                             formik.setFieldValue('region_code', region.code)
                                         }}
-                                            key={region.code} value={region.name}>{region.name}</MenuItem>
+                                                  key={region.code} value={region.name}>{region.name}</MenuItem>
                                     )
                                 })}
                             </Select>
@@ -230,11 +224,6 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.age && formik.errors.age}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.age && formik.errors.age ? (
                                         <ErrorOutline/>
@@ -250,8 +239,9 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                     </Grid>
                     <Grid size={{xs: 12, md: 3}}>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="months_absent">Months
-                                Absent</InputLabel>
+                            <InputLabel sx={{color: "text.secondary"}} htmlFor="months_absent">
+                                Months Absent
+                            </InputLabel>
                             <OutlinedInput
                                 placeholder="Months Absent"
                                 type="number"
@@ -263,11 +253,6 @@ const AbsenteeMemberForm = ({onClose, handleMemberAdd}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.months_absent && formik.errors.months_absent}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.months_absent && formik.errors.months_absent ? (
                                         <ErrorOutline/>

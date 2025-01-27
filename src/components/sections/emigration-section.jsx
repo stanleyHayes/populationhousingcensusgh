@@ -1,17 +1,19 @@
 import {Box, Button, Divider, Grid2 as Grid, Typography} from "@mui/material";
-import SectionFooter from "../shared/section-footer.jsx";
 import SectionHeader from "../shared/section-header.jsx";
 import {useState} from "react";
 import Empty from "../shared/empty.jsx";
 import empty from "../../assets/images/empty.png";
 import EmigrationMembers from "../shared/emigration-members.jsx";
 import AddEmigrationMemberDialog from "../dialogs/add-emigration-member-dialog.jsx";
-import {useDispatch} from "react-redux";
-import {HOUSEHOLD_ACTIONS} from "../../redux/features/households/household-slice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
 
 const EmigrationSection = () => {
 
-    const [members, setMembers] = useState([]);
+    const {step, totalSteps, emigration} = useSelector(selectHousehold);
+
+    const [members, setMembers] = useState([...emigration]);
     const handleMemberAdd = member => {
         setMembers((prevMembers) => [...prevMembers, {id: members.length + 1, ...member}]);
     }
@@ -25,6 +27,8 @@ const EmigrationSection = () => {
 
     const handleSaveEmigration = () => {
         dispatch(HOUSEHOLD_ACTIONS.saveEmigration(members));
+        dispatch(HOUSEHOLD_ACTIONS.next());
+        console.log(JSON.stringify(members));
     }
 
     return (
@@ -85,23 +89,35 @@ const EmigrationSection = () => {
 
                     <Divider variant="fullWidth" sx={{my: 2}}/>
 
-                    <Grid container={true} spacing={2} justifyContent="space-between">
-                        <Grid size={{xs: 12, md: "auto"}}>
-                            <Button
-                                onClick={handleSaveEmigration}
-                                fullWidth={true}
-                                disableElevation={true}
-                                size="large"
-                                variant="contained"
-                                type="submit"
-                                sx={{textTransform: "none"}}>
-                                Save Members
-                            </Button>
+                    <Box>
+                        <Grid container={true} justifyContent="space-between" spacing={2}>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    startIcon={<ChevronLeftOutlined/>}
+                                    fullWidth={true}
+                                    disabled={step === 0}
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                    Previous
+                                </Button>
+                            </Grid>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    onClick={handleSaveEmigration}
+                                    endIcon={<ChevronRightOutlined/>}
+                                    disabled={step === totalSteps}
+                                    variant="contained"
+                                    color="primary"
+                                    disableElevation={true}
+                                    fullWidth={true}>
+                                    Next
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
             )}
-            <SectionFooter/>
 
             {addMemberDialogOpen && (
                 <AddEmigrationMemberDialog

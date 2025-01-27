@@ -1,4 +1,5 @@
 import {
+    Autocomplete,
     Box,
     Button,
     Divider,
@@ -8,7 +9,7 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
-    Select,
+    Select, TextField,
     Typography
 } from "@mui/material";
 import {useFormik} from "formik";
@@ -23,6 +24,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {selectRelationshipCodes} from "../../redux/features/relationship-codes/relationship-codes-slice.js";
 import {PERSON_ACTION_CREATORS, selectPersons} from "../../redux/features/household-members/household-members-slice.js";
+import {selectHousehold} from "../../redux/features/households/household-slice.js";
+import {useState} from "react";
 
 const NewHouseholdMemberRosterForm = () => {
     const dispatch = useDispatch();
@@ -49,11 +52,52 @@ const NewHouseholdMemberRosterForm = () => {
     });
 
     const {codes} = useSelector(selectRelationshipCodes);
+    const {households, loading} = useSelector(selectHousehold);
+
+    const [household, setHousehold] = useState(null);
 
     return (
         <Box>
             <form onSubmit={formik.handleSubmit}>
                 <Grid sx={{mb: 2}} container={true} spacing={2}>
+                    <Grid size={{xs: 12}}>
+                        <Autocomplete
+                            fullWidth
+                            loading={loading}
+                            options={households}
+                            value={household || {
+
+                            }} // Ensure district is always an object
+                            inputValue={household?.name || ''} // Bind the input value to district.name
+                            onChange={(event, value) => {
+                                // Set the entire district object when a value is selected
+                                setHousehold(value || {name: '', code: ''});
+                            }}
+                            onInputChange={(event, value) => {
+                                // Handle input change for free text and update only the name
+                                const matchedOption = households.find(option => option.name === value);
+                                setHousehold(matchedOption || {name: value, code: ''});
+                            }}
+                            getOptionLabel={option => (option?.name ? option.name : '')} // Safeguard against undefined or null
+                            renderOption={(props, option) => (
+                                <li {...props}>
+                                    <Typography variant="body2" sx={{color: 'text.primary'}}>
+                                        {option.name}
+                                    </Typography>
+                                </li>
+                            )}
+                            renderInput={params => (
+                                <TextField
+                                    {...params}
+                                    name="district.name" // Bind to district.name
+                                    id="district-name"
+                                    fullWidth
+                                    label="Search District"
+                                    placeholder="Search District"
+                                />
+                            )}
+                        />
+                    </Grid>
                     <Grid size={{xs: 12}}>
                         <FormControl variant="outlined" fullWidth={true}>
                             <InputLabel sx={{color: "text.secondary"}} htmlFor="name">Full Name</InputLabel>

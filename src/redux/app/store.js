@@ -8,6 +8,8 @@ import enumeratorsReducer from "../features/enumerators/enumerators-slice.js";
 import geographicalAreasReducer from "../features/geographical-areas/geographical-areas-slice.js";
 import personsReducer from "../features/household-members/household-members-slice.js";
 
+import fisheriesLivestockReducer from "../features/fisheries-livestock-codes/fisheries-livestock-codes-slice.js";
+import cropCodesReducer from "../features/crop-codes/crop-codes-slice.js";
 
 import languagesReducer from "../features/languages/languages-slice.js";
 import educationalLevelsReducer from "../features/educational-levels/educational-levels-slice.js";
@@ -47,6 +49,8 @@ const store = configureStore({
         religions: religionsReducer,
         educationalLevels: educationalLevelsReducer,
         languages: languagesReducer,
+        cropCodes: cropCodesReducer,
+        fisheriesLivestockCodes: fisheriesLivestockReducer
     },
     preloadedState: {
         ui: {

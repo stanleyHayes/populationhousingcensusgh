@@ -2,48 +2,76 @@ import {
     Box,
     FormControl,
     FormControlLabel,
-    Grid2 as Grid, InputAdornment,
-    InputLabel, MenuItem, OutlinedInput,
+    Grid2 as Grid,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
     Radio,
-    RadioGroup, Select, Stack, TextField,
+    RadioGroup,
+    Select,
+    Stack,
+    TextField,
     Typography
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
-import DisabilityForm from "./disability-form.jsx";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {ErrorOutline, PersonOutline} from "@mui/icons-material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectNationalities} from "../../redux/features/nationalities/nationalities-slice.js";
 import {selectEthnicities} from "../../redux/features/ethnicities/ethnicities-slice.js";
 import {selectReligions} from "../../redux/features/religions/religions-slice.js";
 import {selectMaritalStatuses} from "../../redux/features/marital-statuses/marital-status-slice.js";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
 
 const MemberDemographyForm = ({person}) => {
+    const {roster} = useSelector(selectHousehold);
+    const dispatch = useDispatch();
+
     const formik = useFormik({
         initialValues: {
-            dob: '',
-            ethnicity: '',
-            ethnicity_code: '',
-            nationality: '',
-            nationality_code: '',
-            birthplace: '',
-            religion: '',
-            religion_code: '',
-            marital_status: '',
-            marital_status_code: '',
-            place_of_residence: '',
-            is_living_in_town_since_birth: false,
-            born_in_village: false,
-            years_lived_in_village: ''
+            dob: dayjs(person?.dob),
+            ethnicity: person?.ethnicity,
+            ethnicity_code: person?.ethnicity_code,
+            nationality: person?.nationality,
+            nationality_code: person?.nationality_code,
+            birthplace: person?.birthplace,
+            religion: person?.religion,
+            religion_code: person?.religion_code,
+            marital_status: person?.marital_status,
+            marital_status_code: person?.marital_status_code,
+            place_of_residence: person?.place_of_residence,
+            is_living_in_town_since_birth: person?.is_living_in_town_since_birth,
+            born_in_village: person?.born_in_village,
+            years_lived_in_village: person?.years_lived_in_village,
         },
-        onSubmit: (values, actions) => {
+        onSubmit: (values) => {
+            const members = roster.map(member => {
+                if (member.id === person.id) {
+                    return {...person, ...values}
+                }
+                return member;
+            });
+            dispatch(HOUSEHOLD_ACTIONS.saveRoster(members));
         },
         validationSchema: Yup.object().shape({
-            has_phone: Yup.bool().required('Person name required'),
-            has_internet: Yup.bool().required('Field required'),
+            dob: Yup.string().required('Field required'),
+            ethnicity: Yup.string().required('Field required'),
+            ethnicity_code: Yup.string().required('Field required'),
+            nationality: Yup.string().required('Field required'),
+            nationality_code: Yup.string().required('Field required'),
+            birthplace: Yup.string().required('Field required'),
+            religion: Yup.string().required('Field required'),
+            religion_code: Yup.string().required('Field required'),
+            marital_status: Yup.string().required('Field required'),
+            marital_status_code: Yup.string().required('Field required'),
+            place_of_residence: Yup.string().required('Field required'),
+            is_living_in_town_since_birth: Yup.bool().required('Field required'),
+            born_in_village: Yup.bool().required('Field required'),
+            years_lived_in_village: Yup.string().required('Field required'),
         })
     });
 
@@ -445,9 +473,24 @@ const MemberDemographyForm = ({person}) => {
     )
 }
 
-DisabilityForm.propTypes = {
+MemberDemographyForm.propTypes = {
     person: PropTypes.shape({
         name: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        dob: PropTypes.string.isRequired,
+        ethnicity: PropTypes.string.isRequired,
+        ethnicity_code: PropTypes.string.isRequired,
+        nationality: PropTypes.string.isRequired,
+        nationality_code: PropTypes.string.isRequired,
+        birthplace: PropTypes.string.isRequired,
+        religion: PropTypes.string.isRequired,
+        religion_code: PropTypes.string.isRequired,
+        marital_status: PropTypes.string.isRequired,
+        marital_status_code: PropTypes.string.isRequired,
+        place_of_residence: PropTypes.string.isRequired,
+        is_living_in_town_since_birth: PropTypes.bool.isRequired,
+        born_in_village: PropTypes.bool.isRequired,
+        years_lived_in_village: PropTypes.string.isRequired
     }).isRequired,
 };
 

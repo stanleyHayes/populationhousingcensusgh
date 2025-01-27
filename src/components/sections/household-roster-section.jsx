@@ -1,17 +1,19 @@
 import {Box, Button, Divider, Grid2 as Grid, Typography} from "@mui/material";
-import SectionFooter from "../shared/section-footer.jsx";
 import SectionHeader from "../shared/section-header.jsx";
 import {useState} from "react";
 import Empty from "../shared/empty.jsx";
 import empty from "./../../assets/images/empty.png";
 import AddMemberDialog from "../dialogs/add-member-dialog.jsx";
 import HouseholdRoster from "../shared/household-roster.jsx";
-import {useDispatch} from "react-redux";
-import {HOUSEHOLD_ACTIONS} from "../../redux/features/households/household-slice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
 
 const HouseholdRosterSection = () => {
 
-    const [members, setMembers] = useState([]);
+    const {roster, step, totalSteps} = useSelector(selectHousehold);
+
+    const [members, setMembers] = useState([...roster]);
     const handleMemberAdd = member => {
         setMembers((prevMembers) => [...prevMembers, {id: members.length + 1, ...member}]);
     }
@@ -25,6 +27,7 @@ const HouseholdRosterSection = () => {
 
     const handleSaveRoster = () => {
         dispatch(HOUSEHOLD_ACTIONS.saveRoster(members));
+        dispatch(HOUSEHOLD_ACTIONS.next());
     }
 
     return (
@@ -85,23 +88,35 @@ const HouseholdRosterSection = () => {
 
                     <Divider variant="fullWidth" sx={{my: 2}}/>
 
-                    <Grid container={true} spacing={2} justifyContent="space-between">
-                        <Grid size={{xs: 12, md: "auto"}}>
-                            <Button
-                                onClick={handleSaveRoster}
-                                fullWidth={true}
-                                disableElevation={true}
-                                size="large"
-                                variant="contained"
-                                type="submit"
-                                sx={{textTransform: "none"}}>
-                                Save Members
-                            </Button>
+                    <Box>
+                        <Grid container={true} justifyContent="space-between" spacing={2}>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    startIcon={<ChevronLeftOutlined/>}
+                                    fullWidth={true}
+                                    disabled={step === 0}
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                    Previous
+                                </Button>
+                            </Grid>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    onClick={handleSaveRoster}
+                                    endIcon={<ChevronRightOutlined/>}
+                                    disabled={step === totalSteps}
+                                    variant="contained"
+                                    color="primary"
+                                    disableElevation={true}
+                                    fullWidth={true}>
+                                    Next
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
             )}
-            <SectionFooter/>
 
             {addMemberDialogOpen && (
                 <AddMemberDialog

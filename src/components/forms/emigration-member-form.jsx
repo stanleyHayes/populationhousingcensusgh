@@ -3,7 +3,6 @@ import {
     Button,
     FormControl,
     Grid2 as Grid,
-    InputAdornment,
     InputLabel,
     MenuItem,
     OutlinedInput,
@@ -12,7 +11,7 @@ import {
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {ErrorOutline, PersonOutline} from "@mui/icons-material";
+import {ErrorOutline} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {selectRelationshipCodes} from "../../redux/features/relationship-codes/relationship-codes-slice.js";
 import {selectRegions} from "../../redux/features/regions/regions-slice.js";
@@ -27,7 +26,6 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
             relationship_to_head: '',
             relationship_to_head_code: '',
             sex: '',
-            status: '',
             age: '',
             destination: '',
             destination_code: '',
@@ -36,25 +34,22 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
             activity_abroad_code: '',
         },
         onSubmit: (values, actions) => {
-            console.log(values);
             handleMemberAdd(values);
             onClose();
             actions.resetForm();
         },
         validationSchema: Yup.object().shape({
-            name: Yup.string().required('Person name required'),
+            name: Yup.string().required('Field required'),
             age: Yup.number().required('Field required'),
-            departure_year: Yup.number().required('Field required'),
+            departure_year: Yup.string().required('Field required'),
             destination: Yup.string().required('Field required'),
             relationship_to_head: Yup.string().required('Field required'),
             relationship_to_head_code: Yup.string().required('Field required'),
             sex: Yup.string().oneOf(['male', 'female'], 'Must be one of male or female')
-                .required('Person name required'),
+                .required('Field required'),
             activity_abroad: Yup.string().required('Field required'),
         })
     });
-
-    console.log(formik.values);
 
     const {codes} = useSelector(selectRelationshipCodes);
     const {regions} = useSelector(selectRegions);
@@ -77,11 +72,6 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.name && formik.errors.name}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.name && formik.errors.name ? (
                                         <ErrorOutline/>
@@ -219,8 +209,12 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
                                 name="sex"
                                 label="Sex"
                                 variant="outlined">
-                                <MenuItem onClick={() => formik.setFieldValue('sex', 'male')} value="male">Male</MenuItem>
-                                <MenuItem onClick={() => formik.setFieldValue('sex', 'female')} value="female">Female</MenuItem>
+                                <MenuItem
+                                    onClick={() => formik.setFieldValue('sex', 'male')}
+                                    value="male">Male</MenuItem>
+                                <MenuItem
+                                    onClick={() => formik.setFieldValue('sex', 'female')}
+                                    value="female">Female</MenuItem>
                             </Select>
                             {formik.touched.sex && formik.errors.sex && (
                                 <Typography variant="body2" color="error">
@@ -231,9 +225,6 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
                     </Grid>
                     <Grid size={{xs: 12, md: 4}}>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="departure_year">
-                                Departure Year
-                            </InputLabel>
                             <DatePicker
                                 label="Departure Year"
                                 required={true}
@@ -242,7 +233,7 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
                                 value={formik.values.departure_year ? dayjs(formik.values.departure_year, 'YYYY') : null}
                                 onChange={(date) => {
                                     if (date) {
-                                        formik.setFieldValue('departure_year', date.year());
+                                        formik.setFieldValue('departure_year', dayjs(date).format('YYYY'));
                                     }
                                 }}
                                 name="departure_year"
@@ -272,11 +263,6 @@ const EmigrationMemberForm = ({onClose, handleMemberAdd}) => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.age && formik.errors.age}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.age && formik.errors.age ? (
                                         <ErrorOutline/>

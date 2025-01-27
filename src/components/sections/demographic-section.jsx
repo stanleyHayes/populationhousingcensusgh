@@ -1,20 +1,21 @@
-import {Box, Divider, Stack, Typography} from "@mui/material";
-import SectionFooter from "../shared/section-footer.jsx";
+import {Box, Button, Divider, Grid2 as Grid, Stack, Typography} from "@mui/material";
 import SectionHeader from "../shared/section-header.jsx";
-import {useSelector} from "react-redux";
-import {selectHousehold} from "../../redux/features/households/household-slice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
 import MemberDemographyForm from "../forms/member-demography-form.jsx";
+import {ChevronLeftOutlined, ChevronRightOutlined} from "@mui/icons-material";
 
 const DemographicSection = () => {
 
-    const {roster, loading, step} = useSelector(selectHousehold);
-    console.log(roster?.length, 'newHousehold.roster', loading, step);
+    const {roster, step, totalSteps} = useSelector(selectHousehold);
+    const dispatch = useDispatch();
+
     return (
         <Box>
             <Box>
                 <SectionHeader title="Demographic"/>
                 <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{color: "text.secondary"}}>
                     Answer for all former household members 15 years and older who have been living continuously for 6
                     months or more outside Ghana (or intend to do so).
@@ -28,7 +29,35 @@ const DemographicSection = () => {
                     )) || []}
                 </Stack>
 
-                <SectionFooter/>
+                <Divider variant="fullWidth" sx={{my: 2}}/>
+
+                <Box>
+                    <Grid container={true} justifyContent="space-between" spacing={2}>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                startIcon={<ChevronLeftOutlined/>}
+                                fullWidth={true}
+                                disabled={step === 0}
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                Previous
+                            </Button>
+                        </Grid>
+                        <Grid size={{xs: 12, md: "auto"}}>
+                            <Button
+                                onClick={() => dispatch(HOUSEHOLD_ACTIONS.next())}
+                                endIcon={<ChevronRightOutlined/>}
+                                disabled={step === totalSteps}
+                                variant="contained"
+                                color="primary"
+                                disableElevation={true}
+                                fullWidth={true}>
+                                Next
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
             </Box>
         </Box>
     )

@@ -1,64 +1,71 @@
 import {
     Box,
+    Button,
+    Divider,
     FormControl,
+    FormControlLabel,
     Grid2 as Grid,
-    InputAdornment,
     InputLabel,
     MenuItem,
     OutlinedInput,
+    Radio,
+    RadioGroup,
     Select,
+    Stack,
     Typography
 } from "@mui/material";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useDispatch} from "react-redux";
-import {HOUSEHOLD_ACTIONS} from "../../redux/features/households/household-slice.js";
-import {ErrorOutline, PersonOutline} from "@mui/icons-material";
+import {useDispatch, useSelector} from "react-redux";
+import {HOUSEHOLD_ACTIONS, selectHousehold} from "../../redux/features/households/household-slice.js";
+import {ChevronLeftOutlined, ChevronRightOutlined, ErrorOutline} from "@mui/icons-material";
 
 const HousingConditionsForm = () => {
     const dispatch = useDispatch();
+    const {step, totalSteps, housingConditions} = useSelector(selectHousehold);
     const formik = useFormik({
         initialValues: {
-            dwelling_type: '',
-            dwelling_type_code: '',
-            outer_wall: '',
-            outer_wall_code: '',
-            floor: '',
-            floor_code: '',
-            roof: '',
-            roof_code: '',
-            tenure_arrangement: '',
-            tenure_arrangement_code: '',
-            ownership_type: '',
-            ownership_type_code: '',
+            dwelling_type: housingConditions?.dwelling_type,
+            dwelling_type_code: housingConditions?.dwelling_type_code,
+            outer_wall: housingConditions?.outer_wall,
+            outer_wall_code: housingConditions?.outer_wall_code,
+            floor: housingConditions?.floor,
+            floor_code: housingConditions?.floor_code,
+            roof: housingConditions?.roof,
+            roof_code: housingConditions?.roof_code,
+            tenure_arrangement: housingConditions?.tenure_arrangement,
+            tenure_arrangement_code: housingConditions?.tenure_arrangement_code,
+            ownership_type: housingConditions?.ownership_type,
+            ownership_type_code: housingConditions?.ownership_type_code,
             rooms: {
-                total: 0,
-                bedroom_count: 0,
-                share_room_with_other_household: true,
-                total_household_share_with_other_household: 0
+                total: housingConditions?.rooms?.total,
+                bedroom_count: housingConditions?.rooms?.bedroom_count,
+                share_room_with_other_household: housingConditions?.rooms?.share_room_with_other_household,
+                total_household_share_with_other_household: housingConditions?.rooms?.total_household_share_with_other_household,
             },
-            lighting: '',
+            lighting: housingConditions?.lighting,
+            lighting_code: housingConditions?.lighting_code,
             water_supply: {
-                source_drinking_water: '',
-                source_domestic_activities: ''
+                source_drinking_water: housingConditions?.water_supply?.source_drinking_water,
+                source_domestic_activities: housingConditions?.water_supply?.source_drinking_water,
             },
-            cooking_fuel: '',
-            cooking_space: '',
-            bathing_facility: '',
+            cooking_fuel: housingConditions?.cooking_fuel,
+            cooking_space: housingConditions?.cooking_space,
+            bathing_facility: housingConditions?.bathing_facility,
             toilet_facility: {
-                type: '',
-                shared: '',
-                total: 0,
-                total_household_use: 0
+                type: housingConditions?.toilet_facility?.type,
+                shared: housingConditions?.toilet_facility?.shared,
+                total: housingConditions?.toilet_facility?.total,
+                total_household_use: housingConditions?.toilet_facility?.total_household_use,
             },
-            solid_waste_disposal: '',
-            liquid_waste_disposal: '',
+            solid_waste_disposal: housingConditions?.solid_waste_disposal,
+            liquid_waste_disposal: housingConditions?.liquid_waste_disposal,
         },
         onSubmit: (values) => {
             dispatch(HOUSEHOLD_ACTIONS.saveHousingConditions({...values}));
         },
         validationSchema: Yup.object().shape({
-            dwelling_type: Yup.string().required('Person name required'),
+            dwelling_type: Yup.string().required('Field required'),
             outer_wall: Yup.string().required('Field required'),
             floor: Yup.string().required('Field required'),
             roof: Yup.string().required('Field required'),
@@ -71,6 +78,7 @@ const HousingConditionsForm = () => {
                 total_household_share_with_other_household: Yup.number().required('Field required'),
             }),
             lighting: Yup.string().required('Field required'),
+            lighting_code: Yup.string().required('Field required'),
             water_supply: Yup.object().shape({
                 source_drinking_water: Yup.string().required('Field required'),
                 source_domestic_activities: Yup.string().required('Field required'),
@@ -563,8 +571,6 @@ const HousingConditionsForm = () => {
                             )}
                         </FormControl>
                     </Grid>
-
-
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -572,86 +578,29 @@ const HousingConditionsForm = () => {
                             ROOMS
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
-                                How many rooms does this household occupy? </InputLabel>
-                            <Select
+                            <InputLabel sx={{color: "text.secondary"}} htmlFor="rooms.total">
+                                How many rooms does this household occupy?
+                            </InputLabel>
+                            <OutlinedInput
+                                placeholder="Total household rooms"
+                                type="number"
+                                name="rooms.total"
+                                id="rooms.total"
+                                label="How many rooms does this household occupy?"
                                 required={true}
-                                fullWidth={true}
-                                value={formik.values.dwelling_type}
-                                label="In what type of dwelling does the household live?"
-                                name="dwelling_type"
-                                variant="outlined">
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Separate house');
-                                        formik.setFieldValue('dwelling_type_code', '01');
-                                    }} value="Separate house">Separate house</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Semi-detached house');
-                                        formik.setFieldValue('dwelling_type_code', '02');
-                                    }} value="Semi-detached house">Semi-detached house</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Flat/Apartment');
-                                        formik.setFieldValue('dwelling_type_code', '03');
-                                    }} value="Flat/Apartment">Flat/Apartment</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Compound house (rooms)');
-                                        formik.setFieldValue('dwelling_type_code', '04');
-                                    }} value="Compound house (rooms)">Compound house (rooms)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (same compound)');
-                                        formik.setFieldValue('dwelling_type_code', '05');
-                                    }} value="Huts/Buildings (same compound)">Huts/Buildings (same compound)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (different compounds)');
-                                        formik.setFieldValue('dwelling_type_code', '06');
-                                    }} value="Huts/Buildings (different compounds)">Huts/Buildings (different
-                                    compounds)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Tent');
-                                        formik.setFieldValue('dwelling_type_code', '07');
-                                    }} value="Tent">Tent</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Improvised home (kiosk, container)');
-                                        formik.setFieldValue('dwelling_type_code', '08');
-                                    }} value="Improvised home (kiosk, container)">Improvised home (kiosk,
-                                    container)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Living quarters attached to office/shop');
-                                        formik.setFieldValue('dwelling_type_code', '09');
-                                    }} value="Living quarters attached to office/shop">Living quarters attached to
-                                    office/shop</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Uncompleted building');
-                                        formik.setFieldValue('dwelling_type_code', '10');
-                                    }} value="Uncompleted building">Uncompleted building</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Other (Specify)');
-                                        formik.setFieldValue('dwelling_type_code', '11');
-                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
-                            </Select>
-                            {formik.touched.dwelling_type && formik.errors.dwelling_type && (
+                                value={formik.values.rooms?.total}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                error={formik.touched.rooms?.total && formik.errors.rooms?.total}
+                                endAdornment={
+                                    formik.touched.rooms?.total && formik.errors.rooms?.total ? (
+                                        <ErrorOutline/>
+                                    ) : null
+                                }
+                            />
+                            {formik.touched.rooms?.total && formik.errors.rooms?.total && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.dwelling_type}
+                                    {formik.errors.rooms?.total}
                                 </Typography>
                             )}
                         </FormControl>
@@ -664,89 +613,33 @@ const HousingConditionsForm = () => {
                             BUT NOT BATHROOMS, TOILET & KITCHEN
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
-                                How many of the rooms are used for sleeping? </InputLabel>
-                            <Select
+                            <InputLabel sx={{color: "text.secondary"}} htmlFor="rooms.bedroom_count">
+                                How many of the rooms are used for sleeping?
+                            </InputLabel>
+                            <OutlinedInput
+                                placeholder="Total beedrooms"
+                                type="number"
+                                name="rooms.bedroom_count"
+                                id="rooms.bedroom_count"
+                                label="How many rooms does this household occupy?"
                                 required={true}
-                                fullWidth={true}
-                                value={formik.values.outer_wall}
-                                label="What is the main material of the outer walls of this dwelling?"
-                                name="outer_wall"
-                                variant="outlined">
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Mud bricks/earth');
-                                        formik.setFieldValue('outer_wall_code', '01');
-                                    }} value="Mud bricks/earth">Mud bricks/earth</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Wood');
-                                        formik.setFieldValue('outer_wall_code', '02');
-                                    }} value="Wood">Wood</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Metal sheet/slate/asbestos');
-                                        formik.setFieldValue('outer_wall_code', '03');
-                                    }} value="Metal sheet/slate/asbestos">Metal sheet/slate/asbestos</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Burnt bricks');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Burnt bricks">Burnt bricks</MenuItem>
-
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Cement blocks/concrete');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Cement blocks/concrete">Cement blocks/concrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Landcrete');
-                                        formik.setFieldValue('outer_wall_code', '07');
-                                    }} value="Landcrete">Landcrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Bamboo');
-                                        formik.setFieldValue('outer_wall_code', '08');
-                                    }} value="Bamboo">Bamboo</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Palm leaves/Thatch (grass)/Raffia');
-                                        formik.setFieldValue('outer_wall_code', '09');
-                                    }} value="Palm leaves/Thatch (grass)/Raffia">Palm leaves/Thatch
-                                    (grass)/Raffia</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Other (Specify)');
-                                        formik.setFieldValue('outer_wall_code', '10');
-                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
-                            </Select>
-                            {formik.touched.outer_wall && formik.errors.outer_wall && (
+                                value={formik.values.rooms?.bedroom_count}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                error={formik.touched.rooms?.bedroom_count && formik.errors.rooms?.bedroom_count}
+                                endAdornment={
+                                    formik.touched.rooms?.bedroom_count && formik.errors.rooms?.bedroom_count ? (
+                                        <ErrorOutline/>
+                                    ) : null
+                                }
+                            />
+                            {formik.touched.rooms?.bedroom_count && formik.errors.rooms?.bedroom_count && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.outer_wall}
+                                    {formik.errors.rooms?.bedroom_count}
                                 </Typography>
                             )}
                         </FormControl>
                     </Grid>
-
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -754,89 +647,36 @@ const HousingConditionsForm = () => {
                             ROOMS
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
+                            <Typography
+                                variant="body2"
+                                sx={{color: "text.secondary"}}>
                                 Does the household share this sleeping room with
-                                other households? </InputLabel>
-                            <Select
-                                required={true}
-                                fullWidth={true}
-                                value={formik.values.dwelling_type}
-                                label="In what type of dwelling does the household live?"
-                                name="dwelling_type"
-                                variant="outlined">
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Separate house');
-                                        formik.setFieldValue('dwelling_type_code', '01');
-                                    }} value="Separate house">Separate house</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Semi-detached house');
-                                        formik.setFieldValue('dwelling_type_code', '02');
-                                    }} value="Semi-detached house">Semi-detached house</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Flat/Apartment');
-                                        formik.setFieldValue('dwelling_type_code', '03');
-                                    }} value="Flat/Apartment">Flat/Apartment</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Compound house (rooms)');
-                                        formik.setFieldValue('dwelling_type_code', '04');
-                                    }} value="Compound house (rooms)">Compound house (rooms)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (same compound)');
-                                        formik.setFieldValue('dwelling_type_code', '05');
-                                    }} value="Huts/Buildings (same compound)">Huts/Buildings (same compound)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (different compounds)');
-                                        formik.setFieldValue('dwelling_type_code', '06');
-                                    }} value="Huts/Buildings (different compounds)">Huts/Buildings (different
-                                    compounds)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Tent');
-                                        formik.setFieldValue('dwelling_type_code', '07');
-                                    }} value="Tent">Tent</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Improvised home (kiosk, container)');
-                                        formik.setFieldValue('dwelling_type_code', '08');
-                                    }} value="Improvised home (kiosk, container)">Improvised home (kiosk,
-                                    container)</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Living quarters attached to office/shop');
-                                        formik.setFieldValue('dwelling_type_code', '09');
-                                    }} value="Living quarters attached to office/shop">Living quarters attached to
-                                    office/shop</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Uncompleted building');
-                                        formik.setFieldValue('dwelling_type_code', '10');
-                                    }} value="Uncompleted building">Uncompleted building</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Other (Specify)');
-                                        formik.setFieldValue('dwelling_type_code', '11');
-                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
-                            </Select>
-                            {formik.touched.dwelling_type && formik.errors.dwelling_type && (
+                                other households?
+                            </Typography>
+                            <RadioGroup
+                                value={formik.values.rooms?.share_room_with_other_household}
+                                name="rooms.share_room_with_other_household">
+                                <Stack direction="row" spacing={2}>
+                                    <FormControlLabel
+                                        onClick={() => formik.setFieldValue('rooms.share_room_with_other_household', true)}
+                                        value={true}
+                                        control={<Radio/>}
+                                        label="Yes"
+                                    />
+                                    <FormControlLabel
+                                        onClick={() => formik.setFieldValue('rooms.share_room_with_other_household', false)}
+                                        value={false}
+                                        control={<Radio/>}
+                                        label="No"
+                                    />
+                                </Stack>
+                            </RadioGroup>
+                            {formik.touched.rooms?.share_room_with_other_household && formik.errors.rooms?.share_room_with_other_household && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.dwelling_type}
+                                    {formik.errors.rooms?.share_room_with_other_household}
                                 </Typography>
                             )}
+
                         </FormControl>
                     </Grid>
                     <Grid size={{xs: 12, md: 6}}>
@@ -846,91 +686,36 @@ const HousingConditionsForm = () => {
                             ROOMS
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
+                            <InputLabel
+                                sx={{color: "text.secondary"}}
+                                htmlFor="rooms.total_household_share_with_other_household">
                                 How many households, including your
-                                household, share this sleeping room? </InputLabel>
-                            <Select
+                                household, share this sleeping room?
+                            </InputLabel>
+                            <OutlinedInput
+                                placeholder="Total beedrooms"
+                                type="number"
+                                name="rooms.total_household_share_with_other_household"
+                                id="rooms.total_household_share_with_other_household"
+                                label="How many rooms does this household occupy?"
                                 required={true}
-                                fullWidth={true}
-                                value={formik.values.outer_wall}
-                                label="What is the main material of the outer walls of this dwelling?"
-                                name="outer_wall"
-                                variant="outlined">
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Mud bricks/earth');
-                                        formik.setFieldValue('outer_wall_code', '01');
-                                    }} value="Mud bricks/earth">Mud bricks/earth</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Wood');
-                                        formik.setFieldValue('outer_wall_code', '02');
-                                    }} value="Wood">Wood</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Metal sheet/slate/asbestos');
-                                        formik.setFieldValue('outer_wall_code', '03');
-                                    }} value="Metal sheet/slate/asbestos">Metal sheet/slate/asbestos</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Burnt bricks');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Burnt bricks">Burnt bricks</MenuItem>
-
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Cement blocks/concrete');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Cement blocks/concrete">Cement blocks/concrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Landcrete');
-                                        formik.setFieldValue('outer_wall_code', '07');
-                                    }} value="Landcrete">Landcrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Bamboo');
-                                        formik.setFieldValue('outer_wall_code', '08');
-                                    }} value="Bamboo">Bamboo</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Palm leaves/Thatch (grass)/Raffia');
-                                        formik.setFieldValue('outer_wall_code', '09');
-                                    }} value="Palm leaves/Thatch (grass)/Raffia">Palm leaves/Thatch
-                                    (grass)/Raffia</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Other (Specify)');
-                                        formik.setFieldValue('outer_wall_code', '10');
-                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
-                            </Select>
-                            {formik.touched.outer_wall && formik.errors.outer_wall && (
+                                value={formik.values.rooms?.total_household_share_with_other_household}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                error={formik.touched.rooms?.total_household_share_with_other_household && formik.errors.rooms?.total_household_share_with_other_household}
+                                endAdornment={
+                                    formik.touched.rooms?.total_household_share_with_other_household && formik.errors.rooms?.total_household_share_with_other_household ? (
+                                        <ErrorOutline/>
+                                    ) : null
+                                }
+                            />
+                            {formik.touched.rooms?.total_household_share_with_other_household && formik.errors.rooms?.total_household_share_with_other_household && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.outer_wall}
+                                    {formik.errors.rooms?.total_household_share_with_other_household}
                                 </Typography>
                             )}
                         </FormControl>
                     </Grid>
-
-
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -945,176 +730,83 @@ const HousingConditionsForm = () => {
                             <Select
                                 required={true}
                                 fullWidth={true}
-                                value={formik.values.dwelling_type}
+                                value={formik.values.lighting}
                                 label="In what type of dwelling does the household live?"
                                 name="dwelling_type"
                                 variant="outlined">
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Separate house');
-                                        formik.setFieldValue('dwelling_type_code', '01');
-                                    }} value="Separate house">Separate house</MenuItem>
+                                        formik.setFieldValue('lighting', 'Electricity (mains)');
+                                        formik.setFieldValue('lighting_code', '01');
+                                    }} value="Electricity (mains)">Electricity (mains)</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Semi-detached house');
-                                        formik.setFieldValue('dwelling_type_code', '02');
-                                    }} value="Semi-detached house">Semi-detached house</MenuItem>
+                                        formik.setFieldValue('lighting', 'Electricity (private generator)');
+                                        formik.setFieldValue('lighting_code', '02');
+                                    }} value="Electricity (private generator)">Electricity (private
+                                    generator)</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Flat/Apartment');
-                                        formik.setFieldValue('dwelling_type_code', '03');
-                                    }} value="Flat/Apartment">Flat/Apartment</MenuItem>
+                                        formik.setFieldValue('lighting', 'Kerosene lamp');
+                                        formik.setFieldValue('lighting_code', '03');
+                                    }} value="Kerosene lamp">Kerosene lamp</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Compound house (rooms)');
-                                        formik.setFieldValue('dwelling_type_code', '04');
-                                    }} value="Compound house (rooms)">Compound house (rooms)</MenuItem>
+                                        formik.setFieldValue('lighting', 'Gas lamp');
+                                        formik.setFieldValue('lighting_code', '04');
+                                    }} value="Gas lamp">Gas lamp</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (same compound)');
-                                        formik.setFieldValue('dwelling_type_code', '05');
-                                    }} value="Huts/Buildings (same compound)">Huts/Buildings (same compound)</MenuItem>
+                                        formik.setFieldValue('lighting', 'Solar energy');
+                                        formik.setFieldValue('lighting_code', '05');
+                                    }} value="Solar energy">Solar energy</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (different compounds)');
-                                        formik.setFieldValue('dwelling_type_code', '06');
-                                    }} value="Huts/Buildings (different compounds)">Huts/Buildings (different
-                                    compounds)</MenuItem>
+                                        formik.setFieldValue('lighting', 'Candle');
+                                        formik.setFieldValue('lighting_code', '06');
+                                    }} value="Candle">
+                                    Candle
+                                </MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Tent');
+                                        formik.setFieldValue('lighting', 'Flashlight/Torch');
                                         formik.setFieldValue('dwelling_type_code', '07');
-                                    }} value="Tent">Tent</MenuItem>
+                                    }} value="Flashlight/Torch">Flashlight/Torch</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Improvised home (kiosk, container)');
-                                        formik.setFieldValue('dwelling_type_code', '08');
-                                    }} value="Improvised home (kiosk, container)">Improvised home (kiosk,
-                                    container)</MenuItem>
+                                        formik.setFieldValue('lighting', 'Firewood');
+                                        formik.setFieldValue('lighting_code', '08');
+                                    }} value="Firewood">
+                                    Firewood
+                                </MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Living quarters attached to office/shop');
-                                        formik.setFieldValue('dwelling_type_code', '09');
-                                    }} value="Living quarters attached to office/shop">Living quarters attached to
-                                    office/shop</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Uncompleted building');
-                                        formik.setFieldValue('dwelling_type_code', '10');
-                                    }} value="Uncompleted building">Uncompleted building</MenuItem>
+                                        formik.setFieldValue('lighting', 'Crop residue');
+                                        formik.setFieldValue('lighting_code', '09');
+                                    }} value="Crop residue">
+                                    Crop residue
+                                </MenuItem>
                                 <MenuItem
                                     onClick={() => {
                                         formik.setFieldValue('dwelling_type', 'Other (Specify)');
-                                        formik.setFieldValue('dwelling_type_code', '11');
+                                        formik.setFieldValue('lighting_code', '10');
                                     }} value="Other (Specify)">Other (Specify)</MenuItem>
                             </Select>
-                            {formik.touched.dwelling_type && formik.errors.dwelling_type && (
+                            {formik.touched.lighting && formik.errors.lighting && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.dwelling_type}
+                                    {formik.errors.lighting}
                                 </Typography>
                             )}
                         </FormControl>
                     </Grid>
-                    <Grid size={{xs: 12, md: 6}}>
-                        <Typography
-                            variant="body2"
-                            sx={{color: "text.secondary", mb: 1, textTransform: "uppercase", fontWeight: "bold"}}>
-                            WATER SUPPLY
-                        </Typography>
-                        <FormControl variant="outlined" fullWidth={true}>
-                            <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
-                                What is the main source of drinking water for the
-                                household? </InputLabel>
-                            <Select
-                                required={true}
-                                fullWidth={true}
-                                value={formik.values.outer_wall}
-                                label="What is the main material of the outer walls of this dwelling?"
-                                name="outer_wall"
-                                variant="outlined">
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Mud bricks/earth');
-                                        formik.setFieldValue('outer_wall_code', '01');
-                                    }} value="Mud bricks/earth">Mud bricks/earth</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Wood');
-                                        formik.setFieldValue('outer_wall_code', '02');
-                                    }} value="Wood">Wood</MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Metal sheet/slate/asbestos');
-                                        formik.setFieldValue('outer_wall_code', '03');
-                                    }} value="Metal sheet/slate/asbestos">Metal sheet/slate/asbestos</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Burnt bricks');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Burnt bricks">Burnt bricks</MenuItem>
-
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Stone');
-                                        formik.setFieldValue('outer_wall_code', '04');
-                                    }} value="Stone">Stone</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Cement blocks/concrete');
-                                        formik.setFieldValue('outer_wall_code', '05');
-                                    }} value="Cement blocks/concrete">Cement blocks/concrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Landcrete');
-                                        formik.setFieldValue('outer_wall_code', '07');
-                                    }} value="Landcrete">Landcrete</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Bamboo');
-                                        formik.setFieldValue('outer_wall_code', '08');
-                                    }} value="Bamboo">Bamboo</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Palm leaves/Thatch (grass)/Raffia');
-                                        formik.setFieldValue('outer_wall_code', '09');
-                                    }} value="Palm leaves/Thatch (grass)/Raffia">Palm leaves/Thatch
-                                    (grass)/Raffia</MenuItem>
-
-                                <MenuItem
-                                    onClick={() => {
-                                        formik.setFieldValue('outer_wall', 'Other (Specify)');
-                                        formik.setFieldValue('outer_wall_code', '10');
-                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
-                            </Select>
-                            {formik.touched.outer_wall && formik.errors.outer_wall && (
-                                <Typography variant="body2" color="error">
-                                    {formik.errors.outer_wall}
-                                </Typography>
-                            )}
-                        </FormControl>
-                    </Grid>
-
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -1125,85 +817,173 @@ const HousingConditionsForm = () => {
                             <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
                                 What is the main source of water used by your
                                 household for other domestic purposes such as
-                                cooking and washing? </InputLabel>
+                                cooking and washing?
+                            </InputLabel>
                             <Select
                                 required={true}
                                 fullWidth={true}
-                                value={formik.values.dwelling_type}
-                                label="In what type of dwelling does the household live?"
-                                name="dwelling_type"
+                                value={formik.values.water_supply?.source_domestic_activities}
+                                label="What is the main material of the outer walls of this dwelling?"
+                                name="water_supply"
                                 variant="outlined">
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Separate house');
-                                        formik.setFieldValue('dwelling_type_code', '01');
-                                    }} value="Separate house">Separate house</MenuItem>
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Pipe-borne inside dwelling');
+                                    }} value="Pipe-borne inside dwelling">Pipe-borne inside dwelling</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Pipe-borne outside dwelling');
+                                    }} value="Pipe-borne outside dwelling">Pipe-borne outside dwelling</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Public tap/Standpipe');
+                                    }} value="Public tap/Standpipe">Public tap/Standpipe</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Semi-detached house');
-                                        formik.setFieldValue('dwelling_type_code', '02');
-                                    }} value="Semi-detached house">Semi-detached house</MenuItem>
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Borehole/Pump/Tube well');
+                                    }} value="Borehole/Pump/Tube well">Borehole/Pump/Tube well</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Flat/Apartment');
-                                        formik.setFieldValue('dwelling_type_code', '03');
-                                    }} value="Flat/Apartment">Flat/Apartment</MenuItem>
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Protected well');
+                                    }} value="Protected well">Protected well</MenuItem>
+
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Compound house (rooms)');
-                                        formik.setFieldValue('dwelling_type_code', '04');
-                                    }} value="Compound house (rooms)">Compound house (rooms)</MenuItem>
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Rain water');
+                                    }} value="Rain water">Rain water</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (same compound)');
-                                        formik.setFieldValue('dwelling_type_code', '05');
-                                    }} value="Huts/Buildings (same compound)">Huts/Buildings (same compound)</MenuItem>
-
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Protected spring');
+                                    }} value="Protected spring">Protected spring</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Huts/Buildings (different compounds)');
-                                        formik.setFieldValue('dwelling_type_code', '06');
-                                    }} value="Huts/Buildings (different compounds)">Huts/Buildings (different
-                                    compounds)</MenuItem>
-
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Tanker supply/Vendor provided');
+                                    }} value="Tanker supply/Vendor provided">Tanker supply/Vendor provided</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Tent');
-                                        formik.setFieldValue('dwelling_type_code', '07');
-                                    }} value="Tent">Tent</MenuItem>
-
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Unprotected well');
+                                    }} value="Unprotected well">Unprotected well</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Improvised home (kiosk, container)');
-                                        formik.setFieldValue('dwelling_type_code', '08');
-                                    }} value="Improvised home (kiosk, container)">Improvised home (kiosk,
-                                    container)</MenuItem>
-
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Unprotected spring');
+                                    }} value="Unprotected spring">Unprotected spring</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Living quarters attached to office/shop');
-                                        formik.setFieldValue('dwelling_type_code', '09');
-                                    }} value="Living quarters attached to office/shop">Living quarters attached to
-                                    office/shop</MenuItem>
-
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'River/Stream');
+                                    }} value="River/Stream">River/Stream</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Uncompleted building');
-                                        formik.setFieldValue('dwelling_type_code', '10');
-                                    }} value="Uncompleted building">Uncompleted building</MenuItem>
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Dugout/Pond/Lake/Dam/Canal');
+                                    }} value="Dugout/Pond/Lake/Dam/Canal">Dugout/Pond/Lake/Dam/Canal</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('dwelling_type', 'Other (Specify)');
-                                        formik.setFieldValue('dwelling_type_code', '11');
+                                        formik.setFieldValue('water_supply.source_domestic_activities', 'Other (Specify)');
                                     }} value="Other (Specify)">Other (Specify)</MenuItem>
                             </Select>
-                            {formik.touched.dwelling_type && formik.errors.dwelling_type && (
+                            {formik.touched.water_supply?.source_domestic_activities && formik.errors.water_supply?.source_domestic_activities && (
                                 <Typography variant="body2" color="error">
-                                    {formik.errors.dwelling_type}
+                                    {formik.errors.water_supply?.source_domestic_activities}
+                                </Typography>
+                            )}
+                        </FormControl>
+                    </Grid>
+
+                    <Grid size={{xs: 12, md: 6}}>
+                        <Typography
+                            variant="body2"
+                            sx={{color: "text.secondary", mb: 1, textTransform: "uppercase", fontWeight: "bold"}}>
+                            WATER SUPPLY
+                        </Typography>
+                        <FormControl variant="outlined" fullWidth={true}>
+                            <InputLabel sx={{color: "text.secondary"}} htmlFor="water_supply.source_drinking_water">
+                                What is the main source of drinking water for the
+                                household?
+                            </InputLabel>
+                            <Select
+                                required={true}
+                                fullWidth={true}
+                                value={formik.values.water_supply?.source_drinking_water}
+                                label="What is the main material of the outer walls of this dwelling?"
+                                name="water_supply"
+                                variant="outlined">
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Pipe-borne inside dwelling');
+                                    }} value="Pipe-borne inside dwelling">Pipe-borne inside dwelling</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Pipe-borne outside dwelling');
+                                    }} value="Pipe-borne outside dwelling">Pipe-borne outside dwelling</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Public tap/Standpipe');
+                                    }} value="Public tap/Standpipe">Public tap/Standpipe</MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply', 'Borehole/Pump/Tube well');
+                                        formik.setFieldValue('water_supply_code', '04');
+                                    }} value="Borehole/Pump/Tube well">Borehole/Pump/Tube well</MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Protected well');
+                                    }} value="Protected well">Protected well</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Rain water');
+                                        formik.setFieldValue('water_supply_code', '06');
+                                    }} value="Rain water">Rain water</MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Protected spring');
+                                    }} value="Protected spring">Protected spring</MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Bottled water');
+                                    }} value="Bottled water">Bottled water</MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Sachet water');
+                                    }} value="Sachet water">
+                                    Sachet water
+                                </MenuItem>
+
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Tanker supply/Vendor provided');
+                                    }} value="Tanker supply/Vendor provided">Tanker supply/Vendor provided</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Unprotected well');
+                                    }} value="Unprotected well">Unprotected well</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Unprotected spring');
+                                    }} value="Unprotected spring">Unprotected spring</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'River/Stream');
+                                    }} value="River/Stream">River/Stream</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Dugout/Pond/Lake/Dam/Canal');
+                                    }} value="Dugout/Pond/Lake/Dam/Canal">Dugout/Pond/Lake/Dam/Canal</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        formik.setFieldValue('water_supply.source_drinking_water', 'Other (Specify)');
+                                    }} value="Other (Specify)">Other (Specify)</MenuItem>
+                            </Select>
+                            {formik.touched.water_supply?.source_drinking_water && formik.errors.water_supply?.source_drinking_water && (
+                                <Typography variant="body2" color="error">
+                                    {formik.errors.water_supply?.source_drinking_water}
                                 </Typography>
                             )}
                         </FormControl>
@@ -1216,7 +996,8 @@ const HousingConditionsForm = () => {
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
-                                What is the main source of cooking fuel for this household? </InputLabel>
+                                What is the main source of cooking fuel for this household?
+                            </InputLabel>
                             <Select
                                 required={true}
                                 fullWidth={true}
@@ -1306,7 +1087,8 @@ const HousingConditionsForm = () => {
                         </Typography>
                         <FormControl variant="outlined" fullWidth={true}>
                             <InputLabel sx={{color: "text.secondary"}} htmlFor="name">
-                                What type of cooking space does this household use? </InputLabel>
+                                What type of cooking space does this household use?
+                            </InputLabel>
                             <Select
                                 required={true}
                                 fullWidth={true}
@@ -1391,7 +1173,6 @@ const HousingConditionsForm = () => {
                     </Grid>
 
 
-
                     <Grid size={{xs: 12, md: 6}}>
                         <Typography
                             variant="body2"
@@ -1418,7 +1199,8 @@ const HousingConditionsForm = () => {
                                     onClick={() => {
                                         formik.setFieldValue('bathing_facility', 'Shared separate bathroom in same house');
                                         formik.setFieldValue('outer_wall_code', '2');
-                                    }} value="Shared separate bathroom in same house">Shared separate bathroom in same house</MenuItem>
+                                    }} value="Shared separate bathroom in same house">Shared separate bathroom in same
+                                    house</MenuItem>
                                 <MenuItem
                                     onClick={() => {
                                         formik.setFieldValue('bathing_facility', 'Private open cubicle');
@@ -1490,7 +1272,8 @@ const HousingConditionsForm = () => {
                                     onClick={() => {
                                         formik.setFieldValue('toilet_facility.type', 'No facility(eg bush/beach/field)');
                                         formik.setFieldValue('dwelling_type_code', '1');
-                                    }} value="No facility(eg bush/beach/field)">No facility(eg bush/beach/field)</MenuItem>
+                                    }} value="No facility(eg bush/beach/field)">No facility(eg
+                                    bush/beach/field)</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
@@ -1556,20 +1339,23 @@ const HousingConditionsForm = () => {
                                 variant="outlined">
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('toilet_facility?.shared', 'Yes, with other household(s) in same house');
-                                    }} value="Yes, with other household(s) in same house">Yes, with other household(s) in same house</MenuItem>
+                                        formik.setFieldValue('toilet_facility.shared', 'Yes, with other household(s) in same house');
+                                    }} value="Yes, with other household(s) in same house">Yes, with other household(s)
+                                    in same house</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('toilet_facility?.shared', 'Yes, with other household(s) in different house');
-                                    }} value="Yes, with other household(s) in different house">Yes, with other household(s) in different house</MenuItem>
+                                        formik.setFieldValue('toilet_facility.shared', 'Yes, with other household(s) in different house');
+                                    }} value="Yes, with other household(s) in different house">Yes, with other
+                                    household(s) in different house</MenuItem>
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('toilet_facility?.shared', 'Yes, with other household(s) and located in different house');
-                                    }} value="Yes, with other household(s) and located in different house">Yes, with other household(s) and located in different house</MenuItem>
+                                        formik.setFieldValue('toilet_facility.shared', 'Yes, with other household(s) and located in different house');
+                                    }} value="Yes, with other household(s) and located in different house">Yes, with
+                                    other household(s) and located in different house</MenuItem>
 
                                 <MenuItem
                                     onClick={() => {
-                                        formik.setFieldValue('toilet_facility?.shared', 'No');
+                                        formik.setFieldValue('toilet_facility.shared', 'No');
                                     }} value="No">No</MenuItem>
                             </Select>
                             {formik.touched.toilet_facility?.shared && formik.errors.toilet_facility?.shared && (
@@ -1602,11 +1388,6 @@ const HousingConditionsForm = () => {
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 error={formik.touched.toilet_facility?.total && formik.errors.toilet_facility?.total}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <PersonOutline/>
-                                    </InputAdornment>
-                                }
                                 endAdornment={
                                     formik.touched.toilet_facility?.total && formik.errors.toilet_facility?.total ? (
                                         <ErrorOutline/>
@@ -1755,6 +1536,38 @@ const HousingConditionsForm = () => {
                         </FormControl>
                     </Grid>
                 </Grid>
+
+                <Box>
+                    <Divider variant="fullWidth" sx={{my: 2}}/>
+
+                    <Box>
+                        <Grid container={true} justifyContent="space-between" spacing={2}>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    startIcon={<ChevronLeftOutlined/>}
+                                    fullWidth={true}
+                                    disabled={step === 0}
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => dispatch(HOUSEHOLD_ACTIONS.previous())}>
+                                    Previous
+                                </Button>
+                            </Grid>
+                            <Grid size={{xs: 12, md: "auto"}}>
+                                <Button
+                                    type="submit"
+                                    endIcon={<ChevronRightOutlined/>}
+                                    disabled={step === totalSteps}
+                                    variant="contained"
+                                    color="primary"
+                                    disableElevation={true}
+                                    fullWidth={true}>
+                                    Next
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
             </form>
         </Box>
     )
